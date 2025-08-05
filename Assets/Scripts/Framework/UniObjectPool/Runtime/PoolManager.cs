@@ -81,6 +81,9 @@ namespace UniFramework.ObjectPool
                 }
                 _namedPools.Clear();
 
+                // 清理对象池注册器
+                PoolRegistry.Clear();
+
                 // 销毁驱动器
                 if (_driver != null)
                 {
@@ -267,6 +270,10 @@ namespace UniFramework.ObjectPool
                         disposable.Dispose();
                     
                     _namedPools.Remove(poolName);
+                    
+                    // 从注册器中移除
+                    PoolRegistry.UnregisterPool(poolName);
+                    
                     UniLogger.Log($"移除命名对象池: {poolName}");
                     return true;
                 }

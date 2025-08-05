@@ -215,6 +215,61 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log(stats);
         }
 
+        [MenuItem("UniObjectPool/显示统计信息")]
+        public static void ShowStatistics()
+        {
+            Debug.Log("=== 对象池统计信息 ===");
+            
+            // 显示StringBuilder池统计
+            var stringBuilderPool = PoolManager.GetPool<StringBuilder>();
+            if (stringBuilderPool != null)
+            {
+                var stats = stringBuilderPool.Statistics;
+                Debug.Log($"StringBuilder池 - 可用: {stringBuilderPool.AvailableCount}, 活跃: {stringBuilderPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
+            }
+            
+            // 显示List<int>池统计
+            var listPool = PoolManager.GetPool<List<int>>();
+            if (listPool != null)
+            {
+                var stats = listPool.Statistics;
+                Debug.Log($"List<int>池 - 可用: {listPool.AvailableCount}, 活跃: {listPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
+            }
+            
+            // 显示GameObject池统计
+            var bulletPool = PoolManager.GetPool<GameObject>("BulletPool");
+            if (bulletPool != null)
+            {
+                var stats = bulletPool.Statistics;
+                Debug.Log($"子弹池 - 可用: {bulletPool.AvailableCount}, 活跃: {bulletPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
+            }
+            
+            var enemyPool = PoolManager.GetPool<GameObject>("EnemyPool");
+            if (enemyPool != null)
+            {
+                var stats = enemyPool.Statistics;
+                Debug.Log($"敌人池 - 可用: {enemyPool.AvailableCount}, 活跃: {enemyPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
+            }
+        }
+
+        [MenuItem("UniObjectPool/显示注册器信息")]
+        public static void ShowRegistryInfo()
+        {
+            Debug.Log("=== 对象池注册器信息 ===");
+            
+            var registrations = PoolRegistry.GetAllRegistrations();
+            foreach (var registration in registrations)
+            {
+                Debug.Log($"池名称: {registration.PoolName}");
+                Debug.Log($"  预制体: {(registration.Prefab ? registration.Prefab.name : "无")}");
+                Debug.Log($"  父对象: {(registration.Parent ? registration.Parent.name : "无")}");
+                Debug.Log($"  类型: {registration.ObjectType.Name}");
+                Debug.Log($"  注册时间: {registration.RegistrationTime}");
+                Debug.Log($"  标签: {string.Join(", ", registration.Tags)}");
+                Debug.Log("---");
+            }
+        }
+
         /// <summary>
         /// 清理所有对象池
         /// </summary>
