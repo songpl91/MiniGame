@@ -190,7 +190,12 @@ namespace Framework.SampleUI.Components
             OnAnimationComplete?.Invoke(animationType.ToString());
             onComplete?.Invoke();
         }
-        
+
+        private object StartCoroutine(IEnumerator doFadeInOut)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 淡入淡出动画
         /// </summary>

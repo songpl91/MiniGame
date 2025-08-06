@@ -305,16 +305,16 @@ namespace Framework.SampleUI.Components
         #endregion
         
         #region 面板事件处理
-        
-        protected override void OnPanelShow()
+
+        public override void OnPanelShow()
         {
             if (Config.playOpenSoundOnShow)
             {
                 PlayOpenSound();
             }
         }
-        
-        protected override void OnPanelHide()
+
+        public override void OnPanelHide()
         {
             if (Config.playCloseSoundOnHide)
             {

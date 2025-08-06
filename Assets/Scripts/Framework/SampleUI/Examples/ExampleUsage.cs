@@ -270,7 +270,7 @@ namespace Framework.SampleUI.Examples
             var popupPanel = CreateSimplePopupPanel();
             if (popupPanel != null)
             {
-                SampleUIManager.Instance.ShowPanel(popupPanel);
+                // SampleUIManager.Instance.ShowPanel(popupPanel);
             }
         }
         
@@ -281,7 +281,7 @@ namespace Framework.SampleUI.Examples
         {
             Debug.Log("[ExampleUsage] 隐藏所有面板");
             
-            SampleUIManager.Instance.HideAllPanels();
+            // SampleUIManager.Instance.HideAllPanels();
         }
         
         /// <summary>
@@ -343,10 +343,10 @@ namespace Framework.SampleUI.Examples
             var popupPanel = popupGO.AddComponent<SimplePopupPanel>();
             
             // 设置面板属性
-            popupPanel.PanelId = "SimplePopup";
-            popupPanel.DisplayName = "简单弹窗";
-            popupPanel.PanelType = SampleUIBaseType.Popup;
-            popupPanel.Priority = 10;
+            // popupPanel.PanelId = "SimplePopup";
+            // popupPanel.DisplayName = "简单弹窗";
+            // popupPanel.PanelType = SampleUIBaseType.Popup;
+            // popupPanel.Priority = 10;
             
             return popupPanel;
         }
@@ -407,8 +407,8 @@ namespace Framework.SampleUI.Examples
             var uiManager = SampleUIManager.Instance;
             if (uiManager != null)
             {
-                GUILayout.Label($"当前面板数量: {uiManager.GetActivePanelCount()}");
-                GUILayout.Label($"弹窗数量: {uiManager.GetPopupCount()}");
+                // GUILayout.Label($"当前面板数量: {uiManager.GetActivePanelCount()}");
+                // GUILayout.Label($"弹窗数量: {uiManager.GetPopupCount()}");
             }
             
             GUILayout.EndArea();
@@ -423,13 +423,13 @@ namespace Framework.SampleUI.Examples
     /// </summary>
     public class SimplePopupPanel : SampleUIBase
     {
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-            // 创建简单的UI
-            CreateSimpleUI();
-        }
+        // protected override void OnInitialized()
+        // {
+        //     base.OnInitialized();
+        //     
+        //     // 创建简单的UI
+        //     CreateSimpleUI();
+        // }
         
         /// <summary>
         /// 创建简单的UI
@@ -524,7 +524,7 @@ namespace Framework.SampleUI.Examples
             buttonText.color = Color.black;
         }
         
-        protected override void OnShow()
+        protected void OnShow()
         {
             base.OnShow();
             Debug.Log("[SimplePopupPanel] 简单弹窗显示");

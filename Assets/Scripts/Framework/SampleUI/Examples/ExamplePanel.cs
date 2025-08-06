@@ -34,25 +34,25 @@ namespace Framework.SampleUI.Examples
         
         #region 初始化
         
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-            // 设置面板基本信息
-            PanelId = "ExamplePanel";
-            DisplayName = "示例面板";
-            PanelType = SampleUIBaseType.Normal;
-            Priority = 1;
-            
-            // 添加组件
-            SetupComponents();
-            
-            // 绑定UI事件
-            BindUIEvents();
-            
-            // 初始化UI
-            InitializeUI();
-        }
+        // protected override void OnInitialized()
+        // {
+        //     // base.OnInitialized();
+        //     
+        //     // 设置面板基本信息
+        //     PanelId = "ExamplePanel";
+        //     DisplayName = "示例面板";
+        //     PanelType = SampleUIBaseType.Normal;
+        //     Priority = 1;
+        //     
+        //     // 添加组件
+        //     SetupComponents();
+        //     
+        //     // 绑定UI事件
+        //     BindUIEvents();
+        //     
+        //     // 初始化UI
+        //     InitializeUI();
+        // }
         
         /// <summary>
         /// 设置组件
@@ -448,7 +448,7 @@ namespace Framework.SampleUI.Examples
                     }
                     if (audioComponent != null)
                     {
-                        audioComponent.SetVolume(volume);
+                        // audioComponent.SetVolume(volume);
                     }
                     Debug.Log($"[ExamplePanel] 更新音量: {volume}");
                     break;
@@ -479,7 +479,7 @@ namespace Framework.SampleUI.Examples
                                 if (kvp.Value is float vol && volumeSlider != null)
                                 {
                                     volumeSlider.value = vol;
-                                    audioComponent?.SetVolume(vol);
+                                    // audioComponent?.SetVolume(vol);
                                 }
                                 break;
                                 
@@ -567,7 +567,7 @@ namespace Framework.SampleUI.Examples
         
         #region 销毁
         
-        protected override void OnDestroyed()
+        protected void OnDestroyed()
         {
             // 解绑UI事件
             if (closeButton != null)
@@ -614,7 +614,7 @@ namespace Framework.SampleUI.Examples
                 inputComponent.OnKeyPressed -= OnKeyPressed;
             }
             
-            base.OnDestroyed();
+            // base.OnDestroyed();
         }
         
         #endregion

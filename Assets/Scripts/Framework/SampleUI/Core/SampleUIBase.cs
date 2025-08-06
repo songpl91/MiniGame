@@ -252,7 +252,7 @@ namespace Framework.SampleUI.Core
         /// </summary>
         /// <typeparam name="T">组件类型</typeparam>
         /// <returns>组件实例</returns>
-        public T GetComponent<T>() where T : class, ISampleUIComponent
+        public T GetComponent<T>() where T : class
         {
             Type componentType = typeof(T);
             components.TryGetValue(componentType, out ISampleUIComponent component);

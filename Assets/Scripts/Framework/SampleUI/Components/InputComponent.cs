@@ -252,7 +252,7 @@ namespace Framework.SampleUI.Components
         
         #region 更新
         
-        protected override void OnUpdate()
+        protected void OnUpdate()
         {
             if (!InputEnabled) return;
             

@@ -342,7 +342,7 @@ namespace Framework.SampleUI
                 panel.Hide();
                 
                 // 从活跃面板列表移除
-                activeP_anels.Remove(panelId);
+                activePanels.Remove(panelId);
                 
                 // 处理面板类型逻辑
                 HandlePanelHideLogic(panel);
