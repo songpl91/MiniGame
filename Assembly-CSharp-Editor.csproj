@@ -846,6 +846,10 @@
       <Project>{1a088f4b-b0fb-0d57-2c6d-64fa49c8506b}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="UniFramework.ObjectPool.csproj">
+      <Project>{45f7cb96-48a8-205c-2566-bc6ab26c2485}</Project>
+      <Name>UniFramework.ObjectPool</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

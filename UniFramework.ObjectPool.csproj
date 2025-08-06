@@ -11,12 +11,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
-    <ProjectGuid>{1a088f4b-b0fb-0d57-2c6d-64fa49c8506b}</ProjectGuid>
+    <RootNamespace>UniFramework.ObjectPool</RootNamespace>
+    <ProjectGuid>{45f7cb96-48a8-205c-2566-bc6ab26c2485}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>UniFramework.ObjectPool</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -25,12 +25,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Temp\Bin\Debug\Assembly-CSharp\</OutputPath>
+    <OutputPath>Temp\Bin\Debug\UniFramework.ObjectPool\</OutputPath>
     <DefineConstants>UNITY_2022_3_62;UNITY_2022_3;UNITY_2022;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;PLATFORM_INITIALIZES_MEMORY_MANAGER_EXPLICITLY;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169,0649</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
@@ -45,133 +45,55 @@
     <Analyzer Include="D:\Program Files\2022.3.62f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Utility\Utility.Text.ITextHelper.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Core\ISplUIComponent.cs" />
-    <Compile Include="Assets\Scripts\Extensions\UI\ButtonTouchEffect.cs" />
-    <Compile Include="Assets\Scripts\Utility\DateTimeUtil.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\Core\IUIState.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Config\UIConfig.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\CircularScrollRect.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\ContentSizeFitterPro.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Core\ISampleUIComponent.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UINavigationManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\StateMachine.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\SettingsState.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UINavigationSystem.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\BaseStateNode.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Encryption.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UINavigationConfigEditor.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Panels\SettingsPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\EmptyRaycast.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Text.cs" />
-    <Compile Include="Assets\Scripts\Utility\StringUtil.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Converter.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\TraditionalUIManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Core\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Managers\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Test\AnimationTest.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UIBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\UIPath.cs" />
-    <Compile Include="Assets\Scripts\Framework\Managers\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\GridLayoutGroupMiddleSort.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\StateMachineUIManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Patterns\Singleton\MonoSingleton.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Assembly.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UIInstanceManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\StateMachineExtensions.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Panels\MessageBoxPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Core\SampleUIBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\MessageToastPool.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\BestPractices\StateMachineUsageExamples.cs" />
-    <Compile Include="Assets\Scripts\Helpers\ScreenshotHandler.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\TextLineExpand.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\BestPractices\AdvancedGameStates.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Config\SplUIConfig.cs" />
-    <Compile Include="Assets\Scripts\Constants\EventNames.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\Core\UIStateMachine.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\Examples\GameStates.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\TouchEventListener.cs" />
-    <Compile Include="Assets\Scripts\Extensions\UI\ButtonHoldDetector.cs" />
-    <Compile Include="Assets\Scripts\Constants\AudioConst.cs" />
-    <Compile Include="Assets\Scripts\Extensions\ExtensionMethod.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UILayerType.cs" />
-    <Compile Include="Assets\Scripts\Framework\Events\EventManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\EnhanceUIManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UINavigationTestScene.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\GamePlayState.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\EnhanceUIPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Examples\ExamplePanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\MessageToast.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\NonLinearNavigationTestManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\StateMachineOptimized.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Components\AudioComponent.cs" />
-    <Compile Include="Assets\Scripts\Extensions\UnityExtension.cs" />
-    <Compile Include="Assets\Scripts\Framework\Managers\TimerManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\Core\UIStateFactory.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\TextGradient.cs" />
-    <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Examples\ExamplePanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Core\ISampleUIBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Examples\ExampleComponent.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\LoadingState.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Examples\TraditionalUIExample.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Utils\UIAnimationHelper.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Path.cs" />
-    <Compile Include="Assets\Scripts\Extensions\GameUtility.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIComponent.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\BestPractices\AdvancedGameManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\BestPractices\PerformanceOptimizedStateMachine.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UIOpenStrategy.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\NonLinearNavigationExample.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\CircleText.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Compression.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\IStateNode.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\PauseState.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Compression.ICompressionHelper.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UILayerManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Config\UIConfig.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UINavigationExample.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\AdvancedUINavigationSystem.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\SwitchButton.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Utils\UIAudioManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Examples\ExampleUsage.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UILoadQueue.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Verifier.Crc32.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\Examples\TestGameManager.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\MainMenuState.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Random.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Format.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\SwitchAniButton.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\ButtonTouchEffect.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\Examples\StateMachineUIExample.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\UIPath.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Core\SampleUIManager.cs" />
-    <Compile Include="Assets\Scripts\Constants\GameConst.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Components\AnimationComponent.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\FlipPageScrollRect.cs" />
-    <Compile Include="Assets\Scripts\Framework\Patterns\Singleton\ISingleton.cs" />
-    <Compile Include="Assets\Scripts\Framework\Patterns\Singleton\Singleton.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Components\InputComponent.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIManager.cs" />
-    <Compile Include="Assets\Scripts\Utility\PlayerPrefsUtil.cs" />
-    <Compile Include="Assets\Scripts\Utility\Utility.Verifier.cs" />
-    <Compile Include="Assets\Scripts\Helpers\SettingHelper.cs" />
-    <Compile Include="Assets\Scripts\Extensions\UI\ToggleSwitcher.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\UIBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIAnimator.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\TraditionalUIPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\NormalUI\Extension\HyperlinkText.cs" />
-    <Compile Include="Assets\Scripts\Framework\SampleUI\Config\SampleUIConfig.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Panels\MainMenuPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\TraditionalUI\Panels\ShopPanel.cs" />
-    <Compile Include="Assets\Scripts\Framework\StateMachineUI\Core\UIStateBase.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UINavigationInputHandler.cs" />
-    <Compile Include="Assets\Scripts\Framework\Fsm\IStateTransition.cs" />
-    <Compile Include="Assets\Scripts\Framework\UI\NonLinearNavigationVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UILoadRequest.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\UsageExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPoolManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\IPoolableComparisonExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\ConstantVsRegistryComparison.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\SamplePoolManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolConfig.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\SamplePoolExtensions.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolRegistry.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\Examples\SamplePoolableObject.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\ISamplePoolable.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\DataClassPoolExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\UniObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolExtensions.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPoolConfig.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\IEnhancedPoolable.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\HighPerformanceObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\WhyPoolRegistryExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\GameObjectPoolable.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\ManagerComparisonExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\SmartPoolManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\PoolRegistryConceptExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolStatistics.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\Examples\SamplePoolUsageExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\UniLogger.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\RelationshipExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPoolStatistics.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPoolExtensions.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\AdvancedUsageExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\IPoolable.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\PoolableStringBuilder.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\SampleGameObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\PoolableScriptExamples.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\MemoryOptimizedPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\TetrisBlockPoolExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PooledObject.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPoolAsync.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\AdvancedTetrisPoolExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\SimpleUsageExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Improvements\GameObjectPoolManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\SamplePool\SamplePool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\PoolableList.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\Examples\EnhancedPoolUsageExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Examples\DynamicPrefabPoolExample.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\PoolManagerDriver.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedGameObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedPool.cs" />
+    <Compile Include="Assets\Scripts\Framework\UniObjectPool\Runtime\Enhanced\EnhancedGameObjectPoolAsync.cs" />
+    <None Include="Assets\Scripts\Framework\UniObjectPool\Runtime\UniFramework.ObjectPool.asmdef" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -421,8 +343,41 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions">
+      <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.YamlDotNet">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="unityplastic">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.collab-proxy@2.8.2\Lib\Editor\unityplastic.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Plastic.Antlr3.Runtime">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.collab-proxy@2.8.2\Lib\Editor\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.collab-proxy@2.8.2\Lib\Editor\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="log4netPlastic">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.collab-proxy@2.8.2\Lib\Editor\log4netPlastic.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.IonicZip">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.visualscripting@1.9.4\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.TextureAssets">
+      <HintPath>D:\Test\MiniGameFramework\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -805,117 +760,14 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>D:\Program Files\2022.3.62f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Runtime">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Shared.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Core">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Core.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Config.Runtime">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Config.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.2D.Internal">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.2D.Internal.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="PPv2URPConverters">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Searcher.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Editor">
-      <HintPath>D:\Test\MiniGameFramework\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="UniFramework.ObjectPool.csproj">
-      <Project>{45f7cb96-48a8-205c-2566-bc6ab26c2485}</Project>
-      <Name>UniFramework.ObjectPool</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
