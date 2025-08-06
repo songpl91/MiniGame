@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UniFramework.ObjectPool.Enhanced;
 
 namespace UniFramework.ObjectPool.Enhanced.Examples
 {
@@ -198,7 +199,7 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
             if (_bulletPool == null) return;
 
             var position = transform.position + Vector3.forward * 2f;
-            var bullet = _bulletPool.Spawn(position, Quaternion.identity);
+            var bullet = _bulletPool.Get(position, Quaternion.identity);
             
             if (bullet != null)
             {
@@ -222,7 +223,7 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
                 UnityEngine.Random.Range(-5f, 5f)
             );
             
-            var enemy = _enemyPool.Spawn(position, Quaternion.identity);
+            var enemy = _enemyPool.Get(position, Quaternion.identity);
             
             if (enemy != null)
             {
@@ -246,7 +247,7 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
             if (_effectPool == null) return;
 
             var position = transform.position + Vector3.up * 2f;
-            var effect = _effectPool.Spawn(position, Quaternion.identity);
+            var effect = _effectPool.Get(position, Quaternion.identity);
             
             if (effect != null)
             {
@@ -376,10 +377,14 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
             Debug.Log(EnhancedPoolManager.GetAllPoolsStatus());
 
             // 显示各个池的详细统计
-            _bulletPool?.LogDetailedStatus("[子弹池] ");
-            _enemyPool?.LogDetailedStatus("[敌人池] ");
-            _effectPool?.LogDetailedStatus("[特效池] ");
-            _dataPool?.LogDetailedStatus("[数据池] ");
+            if (_bulletPool != null)
+                Debug.Log($"[子弹池] {_bulletPool.GetDetailedStatusInfo()}");
+            if (_enemyPool != null)
+                Debug.Log($"[敌人池] {_enemyPool.GetDetailedStatusInfo()}");
+            if (_effectPool != null)
+                Debug.Log($"[特效池] {_effectPool.GetDetailedStatusInfo()}");
+            if (_dataPool != null)
+                _dataPool.LogDetailedStatus("[数据池] ");
         }
 
         /// <summary>
@@ -488,7 +493,7 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
                 await _bulletPool.PrewarmAsync(50, System.Threading.CancellationToken.None, progress);
                 
                 Debug.Log("异步预热完成！");
-                Debug.Log($"对象池状态: {_bulletPool.GetDetailedInfo()}");
+                Debug.Log($"对象池状态: {_bulletPool.GetDetailedStatusInfo()}");
             }
             catch (System.Exception ex)
             {
@@ -505,20 +510,29 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
             {
                 Debug.Log("开始异步批量操作...");
                 
-                // 异步批量生成GameObject
+                // 异步批量获取GameObject
                 var gameObjects = await _bulletPool.SpawnMultipleAsync(20);
-                Debug.Log($"异步生成了 {gameObjects.Length} 个GameObject");
+                Debug.Log($"异步获取了 {gameObjects.Length} 个GameObject");
                 
                 // 等待一段时间
                 await System.Threading.Tasks.Task.Delay(2000);
                 
-                // 异步批量回收
+                // 异步批量归还
                 await _bulletPool.DespawnMultipleAsync(gameObjects);
-                Debug.Log("异步批量回收完成");
+                Debug.Log("异步批量归还完成");
                 
                 // 异步批量获取数据对象
                 var dataObjects = await _dataPool.GetMultipleAsync(100);
                 Debug.Log($"异步获取了 {dataObjects.Length} 个数据对象");
+                
+                // 初始化数据对象
+                for (int i = 0; i < dataObjects.Length; i++)
+                {
+                    if (dataObjects[i] != null)
+                    {
+                        dataObjects[i].Initialize($"AsyncData_{i}");
+                    }
+                }
                 
                 // 批量归还
                 await _dataPool.ReturnMultipleAsync(dataObjects);
@@ -535,12 +549,12 @@ namespace UniFramework.ObjectPool.Enhanced.Examples
         /// </summary>
         private async void DelayedDespawnExample()
         {
-            var gameObj = _bulletPool.Spawn();
-            Debug.Log($"生成GameObject: {gameObj.name}");
+            var gameObj = _bulletPool.Get();
+            Debug.Log($"获取GameObject: {gameObj.name}");
             
-            // 3秒后自动回收
+            // 3秒后自动归还
             await _bulletPool.DespawnDelayedAsync(gameObj, 3.0f);
-            Debug.Log("GameObject已延迟回收");
+            Debug.Log("GameObject已延迟归还");
         }
 
         /// <summary>

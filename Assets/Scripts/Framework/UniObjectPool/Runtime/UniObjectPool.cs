@@ -97,43 +97,55 @@ namespace UniFramework.ObjectPool
         /// <summary>
         /// 从对象池获取对象
         /// </summary>
-        /// <returns>池化对象实例</returns>
+        /// <returns>对象实例</returns>
         public T Get()
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(UniObjectPool<T>));
+                return null;
 
             T item;
+            bool fromPool = false;
+            
             lock (_lockObject)
             {
+                // 尝试从池中获取对象
                 if (_pool.Count > 0)
                 {
-                    // 从池中获取对象
                     item = _pool.Pop();
+                    fromPool = true;
+                    
                     if (_config.EnableStatistics)
                     {
                         _statistics.CacheHitCount++;
-                        _statistics.AvailableCount = _pool.Count;
                     }
                 }
                 else
                 {
-                    // 创建新对象
+                    // 池为空，创建新对象
                     item = _createFunc();
+                    fromPool = false;
+                    
                     if (_config.EnableStatistics)
                     {
-                        _statistics.CacheMissCount++;
                         _statistics.TotalCreatedCount++;
+                        _statistics.CacheMissCount++;
                     }
                 }
 
+                // 添加到活跃对象集合
                 _activeObjects.Add(item);
+
+                // 更新统计信息
                 if (_config.EnableStatistics)
                 {
                     _statistics.TotalGetCount++;
+                    _statistics.AvailableCount = _pool.Count;
                     _statistics.ActiveCount = _activeObjects.Count;
                 }
             }
+
+            // 调用重置动作
+            _resetAction?.Invoke(item);
 
             // 调用对象的 OnSpawn 方法
             if (item is IPoolable poolable)
@@ -141,11 +153,10 @@ namespace UniFramework.ObjectPool
                 poolable.OnSpawn();
             }
 
-            // 调用重置动作
-            _resetAction?.Invoke(item);
-
             return item;
         }
+
+
 
         /// <summary>
         /// 将对象归还到对象池

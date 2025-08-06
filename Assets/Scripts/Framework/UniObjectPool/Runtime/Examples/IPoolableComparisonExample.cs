@@ -31,22 +31,26 @@ namespace UniFramework.ObjectPool.Examples
             // 不实现 IPoolable 的数据类对象池
             PoolManager.CreatePool<DataWithoutIPoolable>("DataWithoutIPoolablePool",
                 createFunc: () => new DataWithoutIPoolable(),
-                actionOnGet: null,
-                actionOnRelease: data => data.Reset(), // 🎯 必须手动指定重置方法
-                actionOnDestroy: null,
-                collectionCheck: true,
-                defaultCapacity: 5,
-                maxSize: 20);
+                resetAction: data => data.Reset(), // 🎯 必须手动指定重置方法
+                destroyAction: null,
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 5,
+                    MaxCapacity = 20
+                });
 
             // 实现 IPoolable 的数据类对象池
             PoolManager.CreatePool<DataWithIPoolable>("DataWithIPoolablePool",
                 createFunc: () => new DataWithIPoolable(),
-                actionOnGet: null,
-                actionOnRelease: null, // 🎯 不需要指定，会自动调用 OnDespawn()
-                actionOnDestroy: null,
-                collectionCheck: true,
-                defaultCapacity: 5,
-                maxSize: 20);
+                resetAction: null, // 🎯 不需要指定，会自动调用 OnDespawn()
+                destroyAction: null,
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 5,
+                    MaxCapacity = 20
+                });
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace UniFramework.ObjectPool.Examples
             
             // 手动归还到池
             PoolManager.Return("DataWithoutIPoolablePool", data);
-            Debug.Log("✓ 手动归还到池（需要在创建池时指定 actionOnRelease）");
+            Debug.Log("✓ 手动归还到池（需要在创建池时指定 resetAction）");
             
             // 再次获取，验证是否重置
             var data2 = PoolManager.Get<DataWithoutIPoolable>("DataWithoutIPoolablePool");
@@ -83,9 +87,8 @@ namespace UniFramework.ObjectPool.Examples
         {
             Debug.Log("\n=== 实现 IPoolable 接口 ===");
             
-            // 获取包装对象
-            var pooledData = PoolManager.Get<DataWithIPoolable>("DataWithIPoolablePool").AsPooled();
-            var data = pooledData.Value;
+            // 获取对象
+            var data = PoolManager.Get<DataWithIPoolable>("DataWithIPoolablePool");
             
             // 设置数据
             data.id = 456;
@@ -93,16 +96,15 @@ namespace UniFramework.ObjectPool.Examples
             
             Debug.Log($"✓ 设置数据：ID={data.id}, Name={data.name}");
             
-            // 自动归还到池（调用 Dispose）
-            pooledData.Dispose();
-            Debug.Log("✓ 自动归还到池（Dispose 时自动调用 OnDespawn）");
+            // 归还到池（会自动调用 OnDespawn）
+            PoolManager.Return("DataWithIPoolablePool", data);
+            Debug.Log("✓ 归还到池（Return 时自动调用 OnDespawn）");
             
             // 再次获取，验证是否重置
-            var pooledData2 = PoolManager.Get<DataWithIPoolable>("DataWithIPoolablePool").AsPooled();
-            var data2 = pooledData2.Value;
+            var data2 = PoolManager.Get<DataWithIPoolable>("DataWithIPoolablePool");
             Debug.Log($"✓ 重新获取数据：ID={data2.id}, Name={data2.name} (应该已重置)");
             
-            pooledData2.Dispose();
+            PoolManager.Return("DataWithIPoolablePool", data2);
         }
     }
 
@@ -119,7 +121,7 @@ namespace UniFramework.ObjectPool.Examples
 
         /// <summary>
         /// 手动重置方法
-        /// 🎯 必须在创建池时通过 actionOnRelease 参数指定调用
+        /// 🎯 必须在创建池时通过 resetAction 参数指定调用
         /// </summary>
         public void Reset()
         {

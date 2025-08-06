@@ -490,7 +490,7 @@ namespace UniFramework.ObjectPool.Enhanced
         {
             if (_config.EnableDebugMode)
             {
-                Debug.Log($"[EnhancedPool<{typeof(T).Name}>] {message}");
+                UnityEngine.Debug.Log($"[EnhancedPool<{typeof(T).Name}>] {message}");
             }
         }
 

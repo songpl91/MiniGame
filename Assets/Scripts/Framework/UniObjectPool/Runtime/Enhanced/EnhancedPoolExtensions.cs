@@ -200,6 +200,47 @@ namespace UniFramework.ObjectPool.Enhanced
             return returnedCount;
         }
 
+        /// <summary>
+        /// 批量获取 GameObject
+        /// </summary>
+        /// <param name="pool">GameObject 对象池</param>
+        /// <param name="count">获取数量</param>
+        /// <returns>GameObject 数组</returns>
+        public static GameObject[] GetMultiple(this EnhancedGameObjectPool pool, int count)
+        {
+            if (count <= 0)
+                return new GameObject[0];
+
+            var gameObjects = new GameObject[count];
+            for (int i = 0; i < count; i++)
+            {
+                gameObjects[i] = pool.Get();
+            }
+            return gameObjects;
+        }
+
+        /// <summary>
+        /// 批量归还 GameObject
+        /// </summary>
+        /// <param name="pool">GameObject 对象池</param>
+        /// <param name="gameObjects">要归还的 GameObject 数组</param>
+        /// <returns>成功归还的数量</returns>
+        public static int ReturnMultiple(this EnhancedGameObjectPool pool, params GameObject[] gameObjects)
+        {
+            if (gameObjects == null || gameObjects.Length == 0)
+                return 0;
+
+            int returnedCount = 0;
+            for (int i = 0; i < gameObjects.Length; i++)
+            {
+                if (pool.Return(gameObjects[i]))
+                {
+                    returnedCount++;
+                }
+            }
+            return returnedCount;
+        }
+
         #endregion
 
         #region 配置扩展
@@ -248,7 +289,7 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <returns>配置对象（用于链式调用）</returns>
         public static EnhancedPoolConfig WithValidation(this EnhancedPoolConfig config, bool enabled = true)
         {
-            config.EnableValidation = enabled;
+            config.ValidateOnReturn = enabled;
             return config;
         }
 
@@ -275,7 +316,7 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <returns>命中率百分比字符串</returns>
         public static string GetHitRateString(this EnhancedPoolStatistics statistics)
         {
-            return $"{statistics.HitRate:P2}";
+            return $"{statistics.CacheHitRate:P2}";
         }
 
         /// <summary>
@@ -295,7 +336,7 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <returns>效率百分比字符串</returns>
         public static string GetEfficiencyString(this EnhancedPoolStatistics statistics)
         {
-            return $"{statistics.Efficiency:P2}";
+            return $"{statistics.PoolEfficiency:P2}";
         }
 
         /// <summary>
@@ -305,7 +346,8 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <returns>运行时长字符串</returns>
         public static string GetUptimeString(this EnhancedPoolStatistics statistics)
         {
-            var uptime = statistics.Uptime;
+            var uptimeSeconds = statistics.RuntimeSeconds;
+            var uptime = TimeSpan.FromSeconds(uptimeSeconds);
             if (uptime.TotalDays >= 1)
                 return $"{uptime.Days}d {uptime.Hours}h {uptime.Minutes}m";
             else if (uptime.TotalHours >= 1)
@@ -340,7 +382,9 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <param name="prefix">日志前缀</param>
         public static void LogDetailedStatus<T>(this EnhancedPool<T> pool, string prefix = "") where T : class
         {
-            var detailedStatus = pool.GetDetailedStatusInfo();
+            var basicStatus = pool.GetStatusInfo();
+            var detailedStats = pool.GetDetailedStatistics();
+            var detailedStatus = $"{basicStatus}\n详细统计信息:\n{detailedStats}";
             Debug.Log($"{prefix}{detailedStatus}");
         }
 
@@ -373,99 +417,81 @@ namespace UniFramework.ObjectPool.Enhanced
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="pool">对象池</param>
         /// <returns>性能评级字符串</returns>
-        public static string GetPerformanceRating<T>(this EnhancedPool<T> pool) where T : class, new()
+        public static string GetPerformanceRating<T>(this EnhancedPool<T> pool) where T : class
         {
             if (pool?.Statistics == null) return "未知";
             
-            var rating = pool.GetPerformanceRating();
-            return rating switch
-            {
-                PerformanceRating.Excellent => "优秀",
-                PerformanceRating.Good => "良好", 
-                PerformanceRating.Average => "一般",
-                PerformanceRating.Poor => "较差",
-                PerformanceRating.Critical => "严重",
-                _ => "未知"
-            };
+            var stats = pool.Statistics;
+            var hitRate = stats.CacheHitRate;
+            var efficiency = stats.PoolEfficiency;
+            
+            if (hitRate >= 0.9f && efficiency >= 0.8f)
+                return "优秀";
+            else if (hitRate >= 0.8f && efficiency >= 0.6f)
+                return "良好";
+            else if (hitRate >= 0.6f && efficiency >= 0.4f)
+                return "一般";
+            else if (hitRate >= 0.4f && efficiency >= 0.2f)
+                return "较差";
+            else
+                return "严重";
         }
 
-        #region 异步操作快捷方法
 
-        /// <summary>
-        /// 异步预热对象池（快捷方法）
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="pool">对象池</param>
-        /// <param name="count">预热数量</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task PrewarmAsync<T>(this EnhancedPool<T> pool, int count) 
-            where T : class, new()
-        {
-            return EnhancedPoolAsync.PrewarmAsync(pool, count);
-        }
-
-        /// <summary>
-        /// 异步获取对象（快捷方法）
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="pool">对象池</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task<T> GetAsync<T>(this EnhancedPool<T> pool) 
-            where T : class, new()
-        {
-            return EnhancedPoolAsync.GetAsync(pool);
-        }
-
-        /// <summary>
-        /// 批量异步获取对象（快捷方法）
-        /// </summary>
-        /// <typeparam name="T">对象类型</typeparam>
-        /// <param name="pool">对象池</param>
-        /// <param name="count">获取数量</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task<T[]> GetMultipleAsync<T>(this EnhancedPool<T> pool, int count) 
-            where T : class, new()
-        {
-            return EnhancedPoolAsync.GetMultipleAsync(pool, count);
-        }
-
-        /// <summary>
-        /// 异步预热GameObject对象池（快捷方法）
-        /// </summary>
-        /// <param name="pool">GameObject对象池</param>
-        /// <param name="count">预热数量</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task PrewarmAsync(this EnhancedGameObjectPool pool, int count)
-        {
-            return EnhancedGameObjectPoolAsync.PrewarmAsync(pool, count);
-        }
-
-        /// <summary>
-        /// 异步生成GameObject（快捷方法）
-        /// </summary>
-        /// <param name="pool">GameObject对象池</param>
-        /// <param name="parent">父物体</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task<UnityEngine.GameObject> SpawnAsync(this EnhancedGameObjectPool pool, 
-            UnityEngine.Transform parent = null)
-        {
-            return EnhancedGameObjectPoolAsync.SpawnAsync(pool, parent);
-        }
-
-        /// <summary>
-        /// 延迟异步回收GameObject（快捷方法）
-        /// </summary>
-        /// <param name="pool">GameObject对象池</param>
-        /// <param name="gameObject">要回收的GameObject</param>
-        /// <param name="delaySeconds">延迟时间（秒）</param>
-        /// <returns>异步任务</returns>
-        public static System.Threading.Tasks.Task DespawnDelayedAsync(this EnhancedGameObjectPool pool, 
-            UnityEngine.GameObject gameObject, float delaySeconds)
-        {
-            return EnhancedGameObjectPoolAsync.DespawnDelayedAsync(pool, gameObject, delaySeconds);
-        }
 
         #endregion
+
+        #region EnhancedGameObjectPool 扩展方法
+
+        /// <summary>
+        /// 检查 GameObject 对象池健康状态
+        /// </summary>
+        /// <param name="pool">GameObject 对象池</param>
+        /// <returns>是否健康</returns>
+        public static bool IsHealthy(this EnhancedGameObjectPool pool)
+        {
+            if (pool == null) return false;
+            
+            // 通过反射获取内部 _pool 字段，或者通过 Statistics 属性间接判断
+            var stats = pool.Statistics;
+            
+            // 检查基本指标
+            if (stats.ValidationFailureCount > stats.TotalGetCount * 0.1f) // 验证失败率超过10%
+                return false;
+                
+            if (stats.DiscardedCount > stats.TotalCreatedCount * 0.2f) // 丢弃率超过20%
+                return false;
+                
+            if (pool.AvailableCount == 0 && pool.ActiveCount > pool.Config.MaxCapacity * 0.9f) // 接近容量上限且无可用对象
+                return false;
+                
+            return true;
+        }
+
+        /// <summary>
+        /// 获取 GameObject 对象池性能评级
+        /// </summary>
+        /// <param name="pool">GameObject 对象池</param>
+        /// <returns>性能评级字符串</returns>
+        public static string GetPerformanceRating(this EnhancedGameObjectPool pool)
+        {
+            if (pool?.Statistics == null) return "未知";
+            
+            var stats = pool.Statistics;
+            var hitRate = stats.CacheHitRate;
+            var efficiency = stats.PoolEfficiency;
+            
+            if (hitRate >= 0.9f && efficiency >= 0.8f)
+                return "优秀";
+            else if (hitRate >= 0.8f && efficiency >= 0.6f)
+                return "良好";
+            else if (hitRate >= 0.6f && efficiency >= 0.4f)
+                return "一般";
+            else if (hitRate >= 0.4f && efficiency >= 0.2f)
+                return "较差";
+            else
+                return "严重";
+        }
 
         #endregion
     }

@@ -239,7 +239,7 @@ namespace UniFramework.ObjectPool.SamplePool
         /// <summary>
         /// 初始化时调用（为后期扩展预留）
         /// </summary>
-        protected static virtual void OnInitialize()
+        private static void OnInitialize()
         {
             // 基础版本不实现，为后期扩展预留
         }
@@ -247,7 +247,7 @@ namespace UniFramework.ObjectPool.SamplePool
         /// <summary>
         /// 清理时调用（为后期扩展预留）
         /// </summary>
-        protected static virtual void OnClear()
+        private static void OnClear()
         {
             // 基础版本不实现，为后期扩展预留
         }
@@ -255,7 +255,7 @@ namespace UniFramework.ObjectPool.SamplePool
         /// <summary>
         /// 销毁时调用（为后期扩展预留）
         /// </summary>
-        protected static virtual void OnDestroy()
+        private static void OnDestroy()
         {
             // 基础版本不实现，为后期扩展预留
         }

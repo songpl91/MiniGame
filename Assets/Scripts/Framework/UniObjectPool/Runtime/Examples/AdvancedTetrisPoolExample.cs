@@ -82,9 +82,9 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log("使用单池策略创建对象池");
 
             // 确保池不存在
-            if (PoolManager.Exists(BLOCK_POOL))
+            if (PoolManager.HasPool(BLOCK_POOL))
             {
-                PoolManager.DestroyPool(BLOCK_POOL);
+                PoolManager.RemovePool(BLOCK_POOL);
             }
 
             // 创建并配置单一对象池
@@ -93,16 +93,13 @@ namespace UniFramework.ObjectPool.Examples
                 parent: blockParent,
                 config: PoolConfig.CreateHighPerformance());
 
-            // 为每种方块类型添加标签
+            // 预热所有方块类型
             for (int i = 0; i < blockPrefabs.Length; i++)
             {
                 if (blockPrefabs[i] == null) continue;
 
-                string blockType = ((BlockType)i).ToString();
-                PoolRegistry.AddTag(BLOCK_POOL, blockType);
-
                 // 预热
-                PoolManager.GetPool<GameObject>(BLOCK_POOL).Preload(blockPrefabs[i], preloadCount);
+                PoolManager.GetPool<GameObject>(BLOCK_POOL).Prewarm(preloadCount);
             }
 
             Debug.Log($"单池创建完成，已预热 {blockPrefabs.Length} 种方块各 {preloadCount} 个");
@@ -121,12 +118,11 @@ namespace UniFramework.ObjectPool.Examples
                 if (blockPrefabs[i] == null) continue;
 
                 string poolName = POOL_NAMES[i];
-                string blockType = ((BlockType)i).ToString();
 
                 // 确保池不存在
-                if (PoolManager.Exists(poolName))
+                if (PoolManager.HasPool(poolName))
                 {
-                    PoolManager.DestroyPool(poolName);
+                    PoolManager.RemovePool(poolName);
                 }
 
                 // 创建对象池
@@ -135,11 +131,8 @@ namespace UniFramework.ObjectPool.Examples
                     parent: blockParent,
                     config: PoolConfig.CreateHighPerformance());
 
-                // 添加标签
-                PoolRegistry.AddTag(poolName, blockType);
-
                 // 预热
-                PoolManager.GetPool<GameObject>(poolName).Preload(blockPrefabs[i], preloadCount);
+                PoolManager.GetPool<GameObject>(poolName).Prewarm(preloadCount);
             }
 
             Debug.Log($"多池创建完成，为 {blockPrefabs.Length} 种方块创建了独立对象池并各预热 {preloadCount} 个");

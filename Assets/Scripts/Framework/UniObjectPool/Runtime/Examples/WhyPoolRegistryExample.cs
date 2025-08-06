@@ -68,7 +68,7 @@ namespace UniFramework.ObjectPool.Examples
             // 他只知道自己有 bulletPrefab，但不知道池名
             
             // 他只能猜测或者创建新的池
-            if (!PoolManager.Exists("BulletPool"))
+            if (!PoolManager.HasPool("BulletPool"))
             {
                 bulletPrefab.CreateGameObjectPool("BulletPool", bulletParent);
                 Debug.Log("✓ 创建了池：BulletPool");
@@ -103,7 +103,7 @@ namespace UniFramework.ObjectPool.Examples
             
             foreach (string poolName in guessNames)
             {
-                if (PoolManager.Exists(poolName))
+                if (PoolManager.HasPool(poolName))
                 {
                     Debug.Log($"猜中了池名：{poolName}");
                     return;

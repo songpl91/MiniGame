@@ -46,7 +46,7 @@ namespace UniFramework.ObjectPool.Examples
             if (bulletPrefab != null)
             {
                 // 方式1: 使用自动生成的唯一名称
-                var bulletPool1 = bulletPrefab.CreateGameObjectPool(
+                var bulletPool1 = bulletPrefab.CreateGameObjectPoolWithDefaultName(
                     parent: bulletParent,
                     config: PoolConfig.CreateDefault()
                 );
@@ -61,7 +61,7 @@ namespace UniFramework.ObjectPool.Examples
                 Debug.Log($"创建子弹池2，自定义名称: CustomBulletPool");
                 
                 // 方式3: 同一预制体，不同父对象
-                var bulletPool3 = bulletPrefab.CreateGameObjectPool(
+                var bulletPool3 = bulletPrefab.CreateGameObjectPoolWithDefaultName(
                     parent: null, // 无父对象
                     config: PoolConfig.CreateDefault()
                 );
@@ -169,7 +169,7 @@ namespace UniFramework.ObjectPool.Examples
             if (bulletPrefab != null)
             {
                 // 获取对象但不指定池名称
-                var bullet = bulletPrefab.SpawnFromPool();
+                var bullet = bulletPrefab.SpawnFromPoolWithDefaultName();
                 if (bullet != null)
                 {
                     Debug.Log("获取子弹对象（自动池名称）");
@@ -190,7 +190,7 @@ namespace UniFramework.ObjectPool.Examples
             if (obj != null)
             {
                 // 不指定池名称，让系统自动查找
-                obj.ReturnToPool();
+                obj.ReturnToPoolWithDefaultName();
                 Debug.Log("对象已智能归还（自动查找池）");
             }
         }
@@ -206,13 +206,13 @@ namespace UniFramework.ObjectPool.Examples
             var registrations = PoolRegistry.GetAllRegistrations();
             foreach (var registration in registrations)
             {
-                var pool = PoolManager.GetPool<GameObject>(registration.PoolName);
+                var pool = PoolManager.GetPool<GameObject>(registration.Value.PoolName);
                 if (pool != null)
                 {
-                    Debug.Log($"池: {registration.PoolName}");
+                    Debug.Log($"池: {registration.Value.PoolName}");
                     Debug.Log($"  可用: {pool.AvailableCount}, 活跃: {pool.ActiveCount}");
-                    Debug.Log($"  预制体: {(registration.Prefab ? registration.Prefab.name : "无")}");
-                    Debug.Log($"  标签: {string.Join(", ", registration.Tags)}");
+                    Debug.Log($"  预制体: {(registration.Value.Prefab ? registration.Value.Prefab.name : "无")}");
+                    Debug.Log($"  标签: {string.Join(", ", registration.Value.Tags)}");
                 }
             }
         }
@@ -261,10 +261,10 @@ namespace UniFramework.ObjectPool.Examples
             
             foreach (var registration in registrations)
             {
-                var pool = PoolManager.GetPool<GameObject>(registration.PoolName);
+                var pool = PoolManager.GetPool<GameObject>(registration.Value.PoolName);
                 if (pool != null)
                 {
-                    GUILayout.Label($"{registration.PoolName}: 可用{pool.AvailableCount} 活跃{pool.ActiveCount}");
+                    GUILayout.Label($"{registration.Value.PoolName}: 可用{pool.AvailableCount} 活跃{pool.ActiveCount}");
                 }
             }
             

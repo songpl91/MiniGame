@@ -26,10 +26,10 @@ namespace UniFramework.ObjectPool.SamplePool
         {
             var pool = new SampleGameObjectPool(prefab, parent, maxCapacity);
             
-            // 注册到管理器
-            SamplePoolManager.CreatePool(poolName, 
-                () => pool.Get(), 
-                go => pool.Return(go), 
+            // 直接注册到管理器的命名对象池中
+            SamplePoolManager.CreatePool<GameObject>(poolName, 
+                () => SampleGameObjectPool.CreateGameObject(prefab, parent), 
+                go => SampleGameObjectPool.ResetGameObject(go), 
                 maxCapacity);
             
             return pool;

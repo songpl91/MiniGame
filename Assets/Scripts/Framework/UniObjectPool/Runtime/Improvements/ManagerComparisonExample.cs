@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UniFramework.ObjectPool.Examples.ManagerComparison;
 
 namespace UniFramework.ObjectPool.Examples
 {
@@ -29,13 +30,13 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log("=== 数据对象池化（使用PoolManager）===");
             
             // 简单数据类，无特殊需求
-            PoolManager.CreatePool<PlayerData>(
-                () => new PlayerData(),
+            PoolManager.CreatePool<UniFramework.ObjectPool.Examples.ManagerComparison.PlayerData>(
+                () => new UniFramework.ObjectPool.Examples.ManagerComparison.PlayerData(),
                 data => data.Reset() // 简单重置
             );
             
             // 使用很简单
-            var playerData = PoolManager.Get<PlayerData>();
+            var playerData = PoolManager.Get<UniFramework.ObjectPool.Examples.ManagerComparison.PlayerData>();
             playerData.Name = "Player1";
             playerData.Level = 10;
             
@@ -137,8 +138,15 @@ namespace UniFramework.ObjectPool.Examples
         }
     }
     
+}
+
+/// <summary>
+/// 管理器对比示例专用的数据类命名空间
+/// </summary>
+namespace UniFramework.ObjectPool.Examples.ManagerComparison
+{
     /// <summary>
-    /// 简单数据类示例
+    /// 简单数据类示例（用于管理器对比演示）
     /// </summary>
     public class PlayerData
     {

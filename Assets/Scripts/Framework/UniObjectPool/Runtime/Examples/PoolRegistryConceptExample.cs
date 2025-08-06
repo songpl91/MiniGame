@@ -56,7 +56,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log("武器系统: 创建子弹池");
             
             // 武器系统不知道其他地方是否已经创建了子弹池
-            if (!PoolManager.Exists("WeaponBulletPool"))
+            if (!PoolManager.HasPool("WeaponBulletPool"))
             {
                 bulletPrefab.CreateGameObjectPool("WeaponBulletPool", bulletParent);
                 Debug.Log("✓ 武器系统创建了 WeaponBulletPool");
@@ -71,7 +71,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log("特效系统: 也想创建子弹池");
             
             // 特效系统也不知道武器系统已经创建了
-            if (!PoolManager.Exists("EffectBulletPool"))
+            if (!PoolManager.HasPool("EffectBulletPool"))
             {
                 bulletPrefab.CreateGameObjectPool("EffectBulletPool", effectParent);
                 Debug.Log("✓ 特效系统创建了 EffectBulletPool");
@@ -91,7 +91,7 @@ namespace UniFramework.ObjectPool.Examples
             
             foreach (var name in possibleNames)
             {
-                if (PoolManager.Exists(name))
+                if (PoolManager.HasPool(name))
                 {
                     Debug.Log($"猜测找到池: {name}");
                 }

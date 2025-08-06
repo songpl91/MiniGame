@@ -335,7 +335,7 @@ namespace UniFramework.ObjectPool
             if (pool == null)
             {
                 // 如果对象池不存在，自动创建
-                pool = prefab.CreateComponentPool<T>(parent);
+                // pool = prefab.CreateComponentPool<T>(parent);
             }
 
             var component = pool.Get();
@@ -375,6 +375,57 @@ namespace UniFramework.ObjectPool
             component.gameObject.SetActive(false);
             return pool.Return(component);
         }
+
+        #region 静态便捷方法
+
+        /// <summary>
+        /// 从对象池获取GameObject（静态方法）
+        /// </summary>
+        /// <param name="poolName">对象池名称</param>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转</param>
+        /// <param name="parent">父对象</param>
+        /// <returns>从对象池获取的GameObject</returns>
+        public static GameObject SpawnFromPool(
+            string poolName,
+            Vector3 position = default,
+            Quaternion rotation = default,
+            Transform parent = null)
+        {
+            if (string.IsNullOrEmpty(poolName))
+                throw new ArgumentException("对象池名称不能为空。请指定要使用的对象池名称", nameof(poolName));
+
+            // 获取对象池
+            var pool = PoolManager.GetPool<GameObject>(poolName);
+            if (pool == null)
+            {
+                throw new InvalidOperationException($"对象池 '{poolName}' 不存在。请先使用 CreateGameObjectPool 创建对象池");
+            }
+
+            // 从对象池获取对象
+            var obj = pool.Get();
+            if (obj != null)
+            {
+                obj.transform.position = position;
+                obj.transform.rotation = rotation;
+                if (parent != null)
+                    obj.transform.SetParent(parent);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// 从对象池获取GameObject（静态方法，仅指定池名称）
+        /// </summary>
+        /// <param name="poolName">对象池名称</param>
+        /// <returns>从对象池获取的GameObject</returns>
+        public static GameObject SpawnFromPool(string poolName)
+        {
+            return SpawnFromPool(poolName, Vector3.zero, Quaternion.identity, null);
+        }
+
+        #endregion
 
         #region 私有辅助方法
 

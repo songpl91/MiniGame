@@ -59,33 +59,39 @@ namespace UniFramework.ObjectPool.Examples
             // 创建不同类型的数据池
             // 🎯 注意：由于数据类实现了 IPoolable 接口，
             // 对象池会自动调用 OnDespawn() 方法进行重置，
-            // 所以不需要手动指定 actionOnRelease
+            // 所以不需要手动指定 resetAction
             PoolManager.CreatePool<PlayerData>("PlayerDataPool", 
                 createFunc: () => new PlayerData(),
-                actionOnGet: null,        // 获取时不需要特殊处理
-                actionOnRelease: null,    // 🎯 不需要手动指定，会自动调用 OnDespawn()
-                actionOnDestroy: null,    // 销毁时不需要特殊处理
-                collectionCheck: true,
-                defaultCapacity: 10,
-                maxSize: 100);
+                resetAction: null,        // 🎯 不需要手动指定，会自动调用 OnDespawn()
+                destroyAction: null,      // 销毁时不需要特殊处理
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 10,
+                    MaxCapacity = 100
+                });
             
             PoolManager.CreatePool<DamageData>("DamageDataPool",
                 createFunc: () => new DamageData(),
-                actionOnGet: null,
-                actionOnRelease: null,    // 🎯 自动调用 OnDespawn()
-                actionOnDestroy: null,
-                collectionCheck: true,
-                defaultCapacity: 50,
-                maxSize: 200);
+                resetAction: null,        // 🎯 自动调用 OnDespawn()
+                destroyAction: null,
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 50,
+                    MaxCapacity = 200
+                });
             
             PoolManager.CreatePool<EventData>("EventDataPool",
                 createFunc: () => new EventData(),
-                actionOnGet: null,
-                actionOnRelease: null,    // 🎯 自动调用 OnDespawn()
-                actionOnDestroy: null,
-                collectionCheck: true,
-                defaultCapacity: 20,
-                maxSize: 100);
+                resetAction: null,        // 🎯 自动调用 OnDespawn()
+                destroyAction: null,
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 20,
+                    MaxCapacity = 100
+                });
             
             Debug.Log("✓ 简单数据类对象池创建完成");
         }
@@ -112,8 +118,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log("【玩家系统】使用玩家数据池");
             
             // 从池中获取数据对象
-            var pooledData = PoolManager.Get<PlayerData>("PlayerDataPool");
-            var playerData = pooledData.Value;
+            var playerData = PoolManager.Get<PlayerData>("PlayerDataPool");
             
             // 设置数据
             playerData.playerId = 12345;
@@ -126,7 +131,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log($"✓ 玩家数据：{playerData.playerName}, 等级:{playerData.level}, 血量:{playerData.health}");
             
             // 使用完毕后归还到池
-            pooledData.Dispose();
+            PoolManager.Return(playerData);
             Debug.Log("✓ 玩家数据已归还到池");
         }
 
@@ -137,8 +142,7 @@ namespace UniFramework.ObjectPool.Examples
             // 模拟多次伤害计算
             for (int i = 0; i < 5; i++)
             {
-                var pooledData = PoolManager.Get<DamageData>("DamageDataPool");
-                var damageData = pooledData.Value;
+                var damageData = PoolManager.Get<DamageData>("DamageDataPool");
                 
                 // 设置伤害数据
                 damageData.attackerId = 1001;
@@ -151,7 +155,7 @@ namespace UniFramework.ObjectPool.Examples
                 Debug.Log($"✓ 伤害数据：{damageData.damageAmount} ({damageData.damageType}), 暴击:{damageData.isCritical}");
                 
                 // 归还到池
-                pooledData.Dispose();
+                PoolManager.Return(damageData);
             }
             
             Debug.Log("✓ 所有伤害数据已处理完毕");
@@ -161,8 +165,7 @@ namespace UniFramework.ObjectPool.Examples
         {
             Debug.Log("【事件系统】使用事件数据池");
             
-            var pooledData = PoolManager.Get<EventData>("EventDataPool");
-            var eventData = pooledData.Value;
+            var eventData = PoolManager.Get<EventData>("EventDataPool");
             
             // 设置事件数据
             eventData.eventId = "PLAYER_LEVEL_UP";
@@ -176,7 +179,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log($"✓ 事件数据：{eventData.eventId}, 参数数量:{eventData.parameters.Count}");
             
             // 归还到池
-            pooledData.Dispose();
+            PoolManager.Return(eventData);
             Debug.Log("✓ 事件数据已归还到池");
         }
 
@@ -207,12 +210,14 @@ namespace UniFramework.ObjectPool.Examples
             
             PoolManager.CreatePool<GameStateData>("GameStateDataPool",
                 createFunc: () => new GameStateData(),
-                actionOnGet: data => data.Initialize(),
-                actionOnRelease: data => data.Reset(),
-                actionOnDestroy: data => data.Cleanup(),
-                collectionCheck: true,
-                defaultCapacity: 5,
-                maxSize: 20);
+                resetAction: data => data.Reset(),
+                destroyAction: data => data.Cleanup(),
+                config: new PoolConfig
+                {
+                    ValidateOnReturn = true,
+                    InitialCapacity = 5,
+                    MaxCapacity = 20
+                });
             
             Debug.Log("✓ 复杂数据类对象池创建完成");
         }
@@ -224,8 +229,7 @@ namespace UniFramework.ObjectPool.Examples
         {
             Debug.Log("使用复杂数据类对象池");
             
-            var pooledData = PoolManager.Get<GameStateData>("GameStateDataPool");
-            var gameState = pooledData.Value;
+            var gameState = PoolManager.Get<GameStateData>("GameStateDataPool");
             
             // 设置复杂数据
             gameState.gameId = "GAME_001";
@@ -250,7 +254,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log($"✓ 事件数:{gameState.gameEvents.Count}, 设置数:{gameState.gameSettings.Count}");
             
             // 归还到池
-            pooledData.Dispose();
+            PoolManager.Return(gameState);
             Debug.Log("✓ 游戏状态数据已归还到池");
         }
 
@@ -323,12 +327,11 @@ namespace UniFramework.ObjectPool.Examples
             
             for (int i = 0; i < testIterations; i++)
             {
-                var pooledDataList = new List<PooledObject<DamageData>>();
+                var dataList = new List<DamageData>();
                 
                 for (int j = 0; j < testDataCount; j++)
                 {
-                    var pooledData = PoolManager.Get<DamageData>("DamageDataPool");
-                    var data = pooledData.Value;
+                    var data = PoolManager.Get<DamageData>("DamageDataPool");
                     
                     data.attackerId = j;
                     data.targetId = j + 1000;
@@ -337,23 +340,22 @@ namespace UniFramework.ObjectPool.Examples
                     data.isCritical = (j % 10) == 0;
                     data.timestamp = System.DateTime.Now;
                     
-                    pooledDataList.Add(pooledData);
+                    dataList.Add(data);
                 }
                 
                 // 模拟使用数据
-                foreach (var pooledData in pooledDataList)
+                foreach (var data in dataList)
                 {
-                    var data = pooledData.Value;
                     var total = data.damageAmount + (data.isCritical ? 50 : 0);
                 }
                 
                 // 归还所有对象到池
-                foreach (var pooledData in pooledDataList)
+                foreach (var data in dataList)
                 {
-                    pooledData.Dispose();
+                    PoolManager.Return(data);
                 }
                 
-                pooledDataList.Clear();
+                dataList.Clear();
             }
             
             stopwatch.Stop();
@@ -374,7 +376,7 @@ namespace UniFramework.ObjectPool.Examples
             
             foreach (string poolName in pools)
             {
-                if (PoolManager.Exists(poolName))
+                if (PoolManager.HasPool(poolName))
                 {
                     Debug.Log($"池 {poolName}：活跃对象数量未知（需要扩展PoolManager接口）");
                 }

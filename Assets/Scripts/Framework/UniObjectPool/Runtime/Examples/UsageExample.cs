@@ -1,5 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Text;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace UniFramework.ObjectPool.Examples
 {
@@ -59,17 +63,21 @@ namespace UniFramework.ObjectPool.Examples
             if (bulletPrefab != null)
             {
                 _bulletPool = bulletPrefab.CreateGameObjectPool(
+                    poolName: "BulletPool",
                     parent: bulletParent,
                     config: PoolConfig.CreateHighPerformance()
                 );
-                bulletPrefab.SpawnFromPool();
-                bulletPrefab.ReturnToPool();
+                
+                // 演示生成和归还
+                var testBullet = bulletPrefab.SpawnFromPool("BulletPool");
+                testBullet.ReturnToPool("BulletPool");
             }
 
             // 4. 创建 GameObject 对象池（敌人）
             if (enemyPrefab != null)
             {
                 _enemyPool = enemyPrefab.CreateGameObjectPool(
+                    poolName: "EnemyPool",
                     parent: enemyParent,
                     config: PoolConfig.CreateMemoryOptimized()
                 );
@@ -124,7 +132,18 @@ namespace UniFramework.ObjectPool.Examples
                 {
                     pooledList.Value.Add(i * i);
                 }
-                UniLogger.Log($"平方数列表: [{string.Join(", ", pooledList.Value.ToArray())}]");
+                
+                // 手动构建字符串，避免使用 System.Linq
+                var sb = new StringBuilder();
+                sb.Append("[");
+                for (int i = 0; i < pooledList.Value.Count; i++)
+                {
+                    if (i > 0) sb.Append(", ");
+                    sb.Append(pooledList.Value[i]);
+                }
+                sb.Append("]");
+                
+                UniLogger.Log($"平方数列表: {sb}");
                 // 自动归还
             }
         }
@@ -147,6 +166,7 @@ namespace UniFramework.ObjectPool.Examples
             for (int i = 0; i < 5; i++)
             {
                 var bullet = bulletPrefab.SpawnFromPool(
+                    poolName: "BulletPool",
                     position: new Vector3(i * 2f, 0, 0),
                     rotation: Quaternion.identity,
                     parent: bulletParent
@@ -161,6 +181,7 @@ namespace UniFramework.ObjectPool.Examples
             for (int i = 0; i < 3; i++)
             {
                 var enemy = enemyPrefab.SpawnFromPool(
+                    poolName: "EnemyPool",
                     position: new Vector3(i * 3f, 0, 5f),
                     rotation: Quaternion.identity,
                     parent: enemyParent
@@ -182,7 +203,7 @@ namespace UniFramework.ObjectPool.Examples
             {
                 if (bullet.name.Contains(bulletPrefab.name))
                 {
-                    bullet.ReturnToPool();
+                    bullet.ReturnToPool("BulletPool");
                 }
             }
             UniLogger.Log("所有子弹已归还到对象池");
@@ -199,7 +220,7 @@ namespace UniFramework.ObjectPool.Examples
             yield return new WaitForSeconds(delay);
             if (enemy != null)
             {
-                enemy.ReturnToPool();
+                enemy.ReturnToPool("EnemyPool");
                 UniLogger.Log($"敌人 {enemy.name} 已归还到对象池");
             }
         }
@@ -215,60 +236,7 @@ namespace UniFramework.ObjectPool.Examples
             Debug.Log(stats);
         }
 
-        [MenuItem("UniObjectPool/显示统计信息")]
-        public static void ShowStatistics()
-        {
-            Debug.Log("=== 对象池统计信息 ===");
-            
-            // 显示StringBuilder池统计
-            var stringBuilderPool = PoolManager.GetPool<StringBuilder>();
-            if (stringBuilderPool != null)
-            {
-                var stats = stringBuilderPool.Statistics;
-                Debug.Log($"StringBuilder池 - 可用: {stringBuilderPool.AvailableCount}, 活跃: {stringBuilderPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
-            }
-            
-            // 显示List<int>池统计
-            var listPool = PoolManager.GetPool<List<int>>();
-            if (listPool != null)
-            {
-                var stats = listPool.Statistics;
-                Debug.Log($"List<int>池 - 可用: {listPool.AvailableCount}, 活跃: {listPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
-            }
-            
-            // 显示GameObject池统计
-            var bulletPool = PoolManager.GetPool<GameObject>("BulletPool");
-            if (bulletPool != null)
-            {
-                var stats = bulletPool.Statistics;
-                Debug.Log($"子弹池 - 可用: {bulletPool.AvailableCount}, 活跃: {bulletPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
-            }
-            
-            var enemyPool = PoolManager.GetPool<GameObject>("EnemyPool");
-            if (enemyPool != null)
-            {
-                var stats = enemyPool.Statistics;
-                Debug.Log($"敌人池 - 可用: {enemyPool.AvailableCount}, 活跃: {enemyPool.ActiveCount}, 总创建: {stats.TotalCreated}, 总销毁: {stats.TotalDestroyed}");
-            }
-        }
 
-        [MenuItem("UniObjectPool/显示注册器信息")]
-        public static void ShowRegistryInfo()
-        {
-            Debug.Log("=== 对象池注册器信息 ===");
-            
-            var registrations = PoolRegistry.GetAllRegistrations();
-            foreach (var registration in registrations)
-            {
-                Debug.Log($"池名称: {registration.PoolName}");
-                Debug.Log($"  预制体: {(registration.Prefab ? registration.Prefab.name : "无")}");
-                Debug.Log($"  父对象: {(registration.Parent ? registration.Parent.name : "无")}");
-                Debug.Log($"  类型: {registration.ObjectType.Name}");
-                Debug.Log($"  注册时间: {registration.RegistrationTime}");
-                Debug.Log($"  标签: {string.Join(", ", registration.Tags)}");
-                Debug.Log("---");
-            }
-        }
 
         /// <summary>
         /// 清理所有对象池
@@ -328,4 +296,73 @@ namespace UniFramework.ObjectPool.Examples
             }
         }
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 编辑器专用的菜单项功能
+    /// </summary>
+    public static class UsageExampleEditorMenu
+    {
+        /// <summary>
+        /// 显示对象池统计信息的菜单项
+        /// </summary>
+        [MenuItem("UniObjectPool/显示统计信息")]
+        public static void ShowStatistics()
+        {
+            Debug.Log("=== 对象池统计信息 ===");
+            
+            // 显示StringBuilder池统计
+            var stringBuilderPool = PoolManager.GetPool<StringBuilder>();
+            if (stringBuilderPool != null)
+            {
+                var stats = stringBuilderPool.Statistics;
+                Debug.Log($"StringBuilder池 - 可用: {stringBuilderPool.AvailableCount}, 活跃: {stringBuilderPool.ActiveCount}, 总创建: {stats.TotalCreatedCount}, 总销毁: {stats.TotalDestroyedCount}");
+            }
+            
+            // 显示List<int>池统计
+            var listPool = PoolManager.GetPool<List<int>>();
+            if (listPool != null)
+            {
+                var stats = listPool.Statistics;
+                Debug.Log($"List<int>池 - 可用: {listPool.AvailableCount}, 活跃: {listPool.ActiveCount}, 总创建: {stats.TotalCreatedCount}, 总销毁: {stats.TotalDestroyedCount}");
+            }
+            
+            // 显示GameObject池统计
+            var bulletPool = PoolManager.GetPool<GameObject>("BulletPool");
+            if (bulletPool != null)
+            {
+                var stats = bulletPool.Statistics;
+                Debug.Log($"子弹池 - 可用: {bulletPool.AvailableCount}, 活跃: {bulletPool.ActiveCount}, 总创建: {stats.TotalCreatedCount}, 总销毁: {stats.TotalDestroyedCount}");
+            }
+            
+            var enemyPool = PoolManager.GetPool<GameObject>("EnemyPool");
+            if (enemyPool != null)
+            {
+                var stats = enemyPool.Statistics;
+                Debug.Log($"敌人池 - 可用: {enemyPool.AvailableCount}, 活跃: {enemyPool.ActiveCount}, 总创建: {stats.TotalCreatedCount}, 总销毁: {stats.TotalDestroyedCount}");
+            }
+        }
+
+        /// <summary>
+        /// 显示注册器信息的菜单项
+        /// </summary>
+        [MenuItem("UniObjectPool/显示注册器信息")]
+        public static void ShowRegistryInfo()
+        {
+            Debug.Log("=== 对象池注册器信息 ===");
+            
+            var registrations = PoolRegistry.GetAllRegistrations();
+            foreach (var registration in registrations)
+            {
+                Debug.Log($"池名称: {registration.Value.PoolName}");
+                Debug.Log($"  预制体: {(registration.Value.Prefab ? registration.Value.Prefab.name : "无")}");
+                Debug.Log($"  父对象: {(registration.Value.Parent ? registration.Value.Parent.name : "无")}");
+                Debug.Log($"  类型: {registration.Value.ObjectType.Name}");
+                Debug.Log($"  注册时间: {registration.Value.RegisterTime}");
+                Debug.Log($"  标签: {string.Join(", ", registration.Value.Tags)}");
+                Debug.Log("---");
+            }
+        }
+    }
+#endif
 }

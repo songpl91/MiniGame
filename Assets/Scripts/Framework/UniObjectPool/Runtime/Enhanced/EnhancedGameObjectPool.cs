@@ -312,7 +312,7 @@ namespace UniFramework.ObjectPool.Enhanced
 
             // 调用 IEnhancedPoolable 接口
             var poolable = gameObject.GetComponent<IEnhancedPoolable>();
-            poolable?.OnReset();
+            poolable?.OnDespawn();
         }
 
         /// <summary>

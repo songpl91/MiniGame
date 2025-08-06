@@ -86,9 +86,9 @@ Enhanced Pool 是在 SamplePool（极简版）基础上构建的增强版对象�
 ```csharp
 // 获取统计信息
 var stats = pool.Statistics;
-Debug.Log($"命中率: {stats.HitRate:P2}");
+Debug.Log($"命中率: {stats.CacheHitRate:P2}");
 Debug.Log($"复用率: {stats.ReuseRate:P2}");
-Debug.Log($"效率: {stats.Efficiency:P2}");
+Debug.Log($"效率: {stats.PoolEfficiency:P2}");
 ```
 
 #### 2. 配置管理系统
@@ -230,7 +230,7 @@ var gameObjectPool = bulletPrefab.CreateEnhancedPool(
 );
 
 // 生成对象
-var bullet = gameObjectPool.Spawn(position, rotation);
+var bullet = gameObjectPool.Get(position, rotation);
 
 // 延迟回收
 bullet.RecycleDelayed(gameObjectPool, 3f);

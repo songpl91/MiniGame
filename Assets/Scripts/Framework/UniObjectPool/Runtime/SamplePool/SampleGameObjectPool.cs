@@ -55,7 +55,7 @@ namespace UniFramework.ObjectPool.SamplePool
         /// <param name="prefab">预制体</param>
         /// <param name="parent">父对象</param>
         /// <returns>创建的GameObject</returns>
-        private static GameObject CreateGameObject(GameObject prefab, Transform parent)
+        public static GameObject CreateGameObject(GameObject prefab, Transform parent)
         {
             var go = Object.Instantiate(prefab, parent);
             go.SetActive(false); // 创建时默认不激活
@@ -66,7 +66,7 @@ namespace UniFramework.ObjectPool.SamplePool
         /// 重置GameObject状态
         /// </summary>
         /// <param name="go">要重置的GameObject</param>
-        private static void ResetGameObject(GameObject go)
+        public static void ResetGameObject(GameObject go)
         {
             if (go != null)
             {

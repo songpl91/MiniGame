@@ -39,6 +39,11 @@ namespace UniFramework.ObjectPool.Improvements
                 _poolName = poolName;
             }
 
+            /// <summary>
+            /// 获取内部对象池实例
+            /// </summary>
+            public UniObjectPool<T> Pool => _pool;
+
             public void Cleanup(int count = -1) => _pool.Cleanup(count);
             public void Clear() => _pool.Clear();
             public void Dispose() => _pool.Dispose();
@@ -196,7 +201,7 @@ namespace UniFramework.ObjectPool.Improvements
             Type type = typeof(T);
             if (_typePools.TryGetValue(type, out IPoolWrapper wrapper))
             {
-                return ((PoolWrapper<T>)wrapper)._pool;
+                return ((PoolWrapper<T>)wrapper).Pool;
             }
             return null;
         }
@@ -211,7 +216,7 @@ namespace UniFramework.ObjectPool.Improvements
         {
             if (_namedPools.TryGetValue(poolName, out IPoolWrapper wrapper))
             {
-                return ((PoolWrapper<T>)wrapper)._pool;
+                return ((PoolWrapper<T>)wrapper).Pool;
             }
             return null;
         }

@@ -44,7 +44,7 @@ namespace UniFramework.ObjectPool.Enhanced
                     // 创建当前批次的GameObject
                     for (int i = 0; i < currentBatchSize; i++)
                     {
-                        var gameObj = pool.Spawn();
+                        var gameObj = pool.Get();
                         createdObjects.Add(gameObj);
                         
                         // GameObject创建后立即禁用，避免影响性能
@@ -65,7 +65,7 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 将所有GameObject归还到池中
                 foreach (var gameObj in createdObjects)
                 {
-                    pool.Despawn(gameObj);
+                    pool.Return(gameObj);
                 }
             }
             catch (OperationCanceledException)
@@ -75,7 +75,7 @@ namespace UniFramework.ObjectPool.Enhanced
                 {
                     if (gameObj != null)
                     {
-                        pool.Despawn(gameObj);
+                        pool.Return(gameObj);
                     }
                 }
                 throw;
@@ -102,7 +102,11 @@ namespace UniFramework.ObjectPool.Enhanced
             // 让出控制权，模拟异步操作
             await Task.Yield();
             
-            var gameObj = pool.Spawn(parent, position ?? Vector3.zero, rotation ?? Quaternion.identity);
+            var gameObj = pool.Get(position ?? Vector3.zero, rotation ?? Quaternion.identity);
+            if (gameObj != null && parent != null)
+            {
+                gameObj.transform.SetParent(parent);
+            }
             return gameObj;
         }
 
@@ -138,7 +142,12 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 生成当前批次的GameObject
                 for (int i = 0; i < currentBatchSize; i++)
                 {
-                    results[startIndex + i] = pool.Spawn(parent);
+                    var gameObj = pool.Get();
+                    if (gameObj != null && parent != null)
+                    {
+                        gameObj.transform.SetParent(parent);
+                    }
+                    results[startIndex + i] = gameObj;
                 }
                 
                 // 报告进度
@@ -186,7 +195,7 @@ namespace UniFramework.ObjectPool.Enhanced
                     var gameObj = gameObjects[startIndex + i];
                     if (gameObj != null)
                     {
-                        pool.Despawn(gameObj);
+                        pool.Return(gameObj);
                     }
                 }
                 
@@ -217,7 +226,7 @@ namespace UniFramework.ObjectPool.Enhanced
             if (gameObject == null) return;
             if (delaySeconds <= 0)
             {
-                pool.Despawn(gameObject);
+                pool.Return(gameObject);
                 return;
             }
 
@@ -229,7 +238,7 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 检查GameObject是否仍然有效
                 if (gameObject != null)
                 {
-                    pool.Despawn(gameObject);
+                    pool.Return(gameObject);
                 }
             }
             catch (OperationCanceledException)
@@ -237,7 +246,7 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 如果操作被取消，仍然尝试回收GameObject
                 if (gameObject != null)
                 {
-                    pool.Despawn(gameObject);
+                    pool.Return(gameObject);
                 }
                 throw;
             }
@@ -274,7 +283,7 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 创建当前批次的GameObject
                 for (int i = 0; i < currentBatchSize; i++)
                 {
-                    var gameObj = pool.Spawn();
+                    var gameObj = pool.Get();
                     createdObjects.Add(gameObj);
                     gameObj.SetActive(false);
                 }
@@ -290,7 +299,7 @@ namespace UniFramework.ObjectPool.Enhanced
             // 将所有GameObject归还到池中
             foreach (var gameObj in createdObjects)
             {
-                pool.Despawn(gameObj);
+                pool.Return(gameObj);
             }
         }
 
@@ -327,7 +336,12 @@ namespace UniFramework.ObjectPool.Enhanced
                 // 生成当前批次的GameObject
                 for (int i = 0; i < currentBatchSize; i++)
                 {
-                    results[startIndex + i] = pool.Spawn(parent);
+                    var gameObj = pool.Get();
+                    if (gameObj != null && parent != null)
+                    {
+                        gameObj.transform.SetParent(parent);
+                    }
+                    results[startIndex + i] = gameObj;
                 }
                 
                 // 报告进度
@@ -361,7 +375,7 @@ namespace UniFramework.ObjectPool.Enhanced
             // 检查GameObject是否仍然有效
             if (gameObject != null)
             {
-                pool.Despawn(gameObject);
+                pool.Return(gameObject);
             }
         }
     }

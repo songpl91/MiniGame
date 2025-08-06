@@ -145,6 +145,57 @@ namespace UniFramework.ObjectPool.Enhanced
             };
         }
 
+        /// <summary>
+        /// 创建高性能配置（适用于频繁创建销毁的场景）
+        /// 与 PoolConfig.CreateHighPerformance() 保持一致
+        /// </summary>
+        /// <returns>高性能配置实例</returns>
+        public static EnhancedPoolConfig CreateHighPerformance()
+        {
+            return new EnhancedPoolConfig
+            {
+                InitialCapacity = 20,
+                MaxCapacity = 200,
+                EnableStatistics = false,
+                ValidateOnReturn = false,
+                EnableDebugMode = false
+            };
+        }
+
+        /// <summary>
+        /// 创建内存优化配置（适用于内存敏感的场景）
+        /// 与 PoolConfig.CreateMemoryOptimized() 保持一致
+        /// </summary>
+        /// <returns>内存优化配置实例</returns>
+        public static EnhancedPoolConfig CreateMemoryOptimized()
+        {
+            return new EnhancedPoolConfig
+            {
+                InitialCapacity = 5,
+                MaxCapacity = 50,
+                EnableStatistics = true,
+                ValidateOnReturn = true,
+                EnableDebugMode = false
+            };
+        }
+
+        /// <summary>
+        /// 创建平衡配置（性能和内存的平衡）
+        /// 适用于大多数常规场景
+        /// </summary>
+        /// <returns>平衡配置实例</returns>
+        public static EnhancedPoolConfig CreateBalanced()
+        {
+            return new EnhancedPoolConfig
+            {
+                InitialCapacity = 10,
+                MaxCapacity = 100,
+                EnableStatistics = true,
+                ValidateOnReturn = true,
+                EnableDebugMode = false
+            };
+        }
+
         #endregion
 
         #region 配置验证

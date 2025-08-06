@@ -67,7 +67,7 @@ namespace UniFramework.ObjectPool.Examples
                 if (prefab == null) continue;
 
                 // 若未注册则创建池
-                if (!PoolManager.Exists(BLOCK_POOL))
+                if (!PoolManager.HasPool(BLOCK_POOL))
                 {
                     prefab.CreateGameObjectPool(
                         poolName: BLOCK_POOL,
@@ -75,11 +75,8 @@ namespace UniFramework.ObjectPool.Examples
                         config: PoolConfig.CreateHighPerformance());
                 }
 
-                // 标签记录（便于调试或查找）
-                PoolRegistry.AddTag(BLOCK_POOL, ((BlockType)i).ToString());
-
                 // 预热 10 个实例
-                PoolManager.GetPool<GameObject>(BLOCK_POOL).Preload(prefab, 10);
+                PoolManager.GetPool<GameObject>(BLOCK_POOL).Prewarm(10);
             }
 
             Debug.Log("方块对象池预热完成！");
