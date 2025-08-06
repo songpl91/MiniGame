@@ -656,7 +656,7 @@ namespace Framework.EnhanceUI.Core
             if (uiManager == null)
                 return false;
             
-            return uiManager.CloseUI(item.instanceId);
+            return uiManager.CloseUIByInstanceId(item.instanceId);
         }
         
         /// <summary>

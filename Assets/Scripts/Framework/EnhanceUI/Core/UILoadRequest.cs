@@ -13,78 +13,78 @@ namespace Framework.EnhanceUI.Core
         /// <summary>
         /// 请求唯一ID
         /// </summary>
-        public string RequestId { get; private set; }
+        public string RequestId { get; set; }
         
         /// <summary>
         /// UI名称
         /// </summary>
-        public string UIName { get; private set; }
+        public string UIName { get; set; }
         
         /// <summary>
         /// 加载模式
         /// </summary>
-        public UILoadMode LoadMode { get; private set; }
+        public UILoadMode LoadMode { get; set; }
         
         /// <summary>
         /// 传递给UI的数据
         /// </summary>
-        public object Data { get; private set; }
+        public object Data { get; set; }
         
         /// <summary>
         /// UI配置数据
         /// </summary>
-        public UIConfigData Config { get; private set; }
+        public UIConfigData Config { get; set; }
         
         /// <summary>
         /// 请求创建时间
         /// </summary>
-        public DateTime CreateTime { get; private set; }
+        public DateTime CreateTime { get; set; }
         
         /// <summary>
         /// 请求优先级（数值越大优先级越高）
         /// </summary>
-        public int Priority { get; private set; }
+        public int Priority { get; set; }
         
         /// <summary>
         /// 是否可以被取消
         /// </summary>
-        public bool CanCancel { get; private set; }
+        public bool CanCancel { get; set; }
         
         /// <summary>
         /// 请求状态
         /// </summary>
-        public UILoadRequestState State { get; private set; }
+        public UILoadRequestState State { get; set; }
         
         /// <summary>
         /// 加载进度（0-1）
         /// </summary>
-        public float Progress { get; private set; }
+        public float Progress { get; set; }
         
         /// <summary>
         /// 错误信息
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage { get; set; }
         
         // 回调委托
         /// <summary>
         /// 加载成功回调
         /// </summary>
-        public Action<EnhanceUIPanel> OnSuccess { get; private set; }
+        public Action<EnhanceUIPanel> OnSuccess { get; set; }
         
         /// <summary>
         /// 加载失败回调
         /// </summary>
-        public Action<string> OnFailure { get; private set; }
+        public Action<string> OnFailure { get; set; }
         
         /// <summary>
         /// 加载进度回调
         /// </summary>
-        public Action<float> OnProgress { get; private set; }
+        public Action<float> OnProgress { get; set; }
         
         /// <summary>
         /// 加载取消回调
         /// </summary>
-        public Action OnCancel { get; private set; }
+        public Action OnCancel { get; set; }
         
         /// <summary>
         /// 构造函数

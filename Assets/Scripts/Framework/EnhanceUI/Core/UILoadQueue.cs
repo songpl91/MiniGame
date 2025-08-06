@@ -425,7 +425,7 @@ namespace Framework.EnhanceUI.Core
                         yield break; // 请求已被取消
                     }
                     
-                    yield return null;
+                   
                 }
                 
                 // 完成请求

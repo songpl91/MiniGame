@@ -77,10 +77,7 @@ namespace Framework.EnhanceUI.Core
         /// </summary>
         public UIConfigData Config { get; private set; }
         
-        /// <summary>
-        /// 面板实例ID
-        /// </summary>
-        public string InstanceId { get; private set; }
+
         
         /// <summary>
         /// 传递给面板的数据
@@ -97,11 +94,33 @@ namespace Framework.EnhanceUI.Core
         /// </summary>
         protected UIConfigData configData;
         
-        // 动画相关
+        // 动画相关字段
+        /// <summary>
+        /// 动画类型
+        /// </summary>
+        protected UIAnimationType animationType = UIAnimationType.Fade;
+        
+        /// <summary>
+        /// 动画持续时间
+        /// </summary>
+        protected float animationDuration = 0.3f;
+        
+        /// <summary>
+        /// 点击背景是否关闭面板
+        /// </summary>
+        protected bool closeOnBackgroundClick = false;
+        
+        /// <summary>
+        /// 是否播放音效
+        /// </summary>
+        protected bool playSound = true;
+        
+        // 动画相关私有字段
         private Coroutine currentAnimation;
         private Vector3 originalScale;
         private Vector2 originalPosition;
-        
+        private UIState currentState;
+
         #endregion
         
         #region 事件委托
@@ -161,14 +180,15 @@ namespace Framework.EnhanceUI.Core
         public void SetConfig(UIConfigData config)
         {
             configData = config;
+            Config = config;
             if (config != null)
             {
-                panelName = config.UIName;
-                layerType = config.LayerType;
-                animationType = config.AnimationType;
-                animationDuration = config.AnimationDuration;
-                closeOnBackgroundClick = config.CloseOnBackgroundClick;
-                playSound = config.PlaySound;
+                panelName = config.uiName;
+                layerType = config.layerType;
+                animationType = config.showAnimation;
+                animationDuration = config.animationDuration;
+                closeOnBackgroundClick = config.closeOnBackgroundClick;
+                playSound = config.playSound;
             }
         }
         
@@ -179,7 +199,7 @@ namespace Framework.EnhanceUI.Core
         {
             // 重置状态
             currentState = UIState.Hidden;
-            isInitialized = false;
+            IsInitialized = false;
             panelData = null;
             
             // 重置UI组件
@@ -221,7 +241,7 @@ namespace Framework.EnhanceUI.Core
         protected virtual void Awake()
         {
             // 生成实例ID
-            InstanceId = Guid.NewGuid().ToString();
+            instanceId = Guid.NewGuid().ToString();
             
             // 获取必要组件
             InitializeComponents();
@@ -285,18 +305,7 @@ namespace Framework.EnhanceUI.Core
                 contentRoot = GetComponent<RectTransform>();
         }
         
-        /// <summary>
-        /// 设置UI配置
-        /// </summary>
-        /// <param name="config">UI配置数据</param>
-        internal void SetConfig(UIConfigData config)
-        {
-            Config = config;
-            if (config != null)
-            {
-                layerType = config.layerType;
-            }
-        }
+
         
         /// <summary>
         /// 初始化面板

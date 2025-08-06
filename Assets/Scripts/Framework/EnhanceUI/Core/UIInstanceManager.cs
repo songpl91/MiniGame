@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Framework.EnhanceUI.Config;
 
@@ -40,7 +39,19 @@ namespace Framework.EnhanceUI.Core
         /// <summary>
         /// 总实例数量
         /// </summary>
-        public int TotalInstanceCount => uiInstances.Values.Sum(list => list.Count);
+        public int TotalInstanceCount 
+        { 
+            get 
+            {
+                int totalCount = 0;
+                // 遍历所有UI实例列表，累加数量
+                foreach (var instanceList in uiInstances.Values)
+                {
+                    totalCount += instanceList.Count;
+                }
+                return totalCount;
+            }
+        }
         
         #endregion
         
@@ -111,7 +122,7 @@ namespace Framework.EnhanceUI.Core
                 // 检查多开策略
                 if (!CanCreateInstance(config))
                 {
-                    Debug.LogWarning($"[UIInstanceManager] 根据策略 {config.OpenStrategy} 无法创建新实例: {config.UIName}");
+                    Debug.LogWarning($"[UIInstanceManager] 根据策略 {config.openStrategy} 无法创建新实例: {config.uiName}");
                     return null;
                 }
                 
@@ -121,8 +132,8 @@ namespace Framework.EnhanceUI.Core
                 // 创建新实例
                 UIInstance instance = new UIInstance
                 {
-                    InstanceId = GenerateInstanceId(config.UIName),
-                    UIName = config.UIName,
+                    InstanceId = GenerateInstanceId(config.uiName),
+                    UIName = config.uiName,
                     Panel = panel,
                     Config = config,
                     Data = data, // 这里仍然会装箱，但这是UIInstance的限制
@@ -145,7 +156,7 @@ namespace Framework.EnhanceUI.Core
                 // 触发创建事件
                 OnInstanceCreated?.Invoke(instance);
                 
-                Debug.Log($"[UIInstanceManager] 创建实例成功: {config.UIName} (ID: {instance.InstanceId})");
+                Debug.Log($"[UIInstanceManager] 创建实例成功: {config.uiName} (ID: {instance.InstanceId})");
                 return instance;
             }
             catch (Exception e)
@@ -175,7 +186,7 @@ namespace Framework.EnhanceUI.Core
                 // 检查多开策略
                 if (!CanCreateInstance(config))
                 {
-                    Debug.LogWarning($"[UIInstanceManager] 根据策略 {config.OpenStrategy} 无法创建新实例: {config.UIName}");
+                    Debug.LogWarning($"[UIInstanceManager] 根据策略 {config.openStrategy} 无法创建新实例: {config.uiName}");
                     return null;
                 }
                 
@@ -185,8 +196,8 @@ namespace Framework.EnhanceUI.Core
                 // 创建新实例
                 UIInstance instance = new UIInstance
                 {
-                    InstanceId = GenerateInstanceId(config.UIName),
-                    UIName = config.UIName,
+                    InstanceId = GenerateInstanceId(config.uiName),
+                    UIName = config.uiName,
                     Panel = panel,
                     Config = config,
                     Data = data,
@@ -206,7 +217,7 @@ namespace Framework.EnhanceUI.Core
                 // 触发创建事件
                 OnInstanceCreated?.Invoke(instance);
                 
-                Debug.Log($"[UIInstanceManager] 创建实例成功: {config.UIName} (ID: {instance.InstanceId})");
+                Debug.Log($"[UIInstanceManager] 创建实例成功: {config.uiName} (ID: {instance.InstanceId})");
                 return instance;
             }
             catch (Exception e)
@@ -242,8 +253,8 @@ namespace Framework.EnhanceUI.Core
                 instance.State = UIInstanceState.Showing;
                 instance.LastShowTime = Time.time;
                 
-                // 显示面板
-                instance.Panel.Show();
+                // 显示面板（明确调用无参数版本）
+                instance.Panel.Show(false);
                 
                 // 更新状态为已显示
                 instance.State = UIInstanceState.Shown;
@@ -400,7 +411,19 @@ namespace Framework.EnhanceUI.Core
         /// <returns>活跃实例列表</returns>
         public List<UIInstance> GetActiveInstances(string uiName)
         {
-            return GetInstances(uiName).Where(i => i.IsActive()).ToList();
+            var allInstances = GetInstances(uiName);
+            var activeInstances = new List<UIInstance>();
+            
+            // 遍历所有实例，筛选出活跃的实例
+            for (int i = 0; i < allInstances.Count; i++)
+            {
+                if (allInstances[i].IsActive())
+                {
+                    activeInstances.Add(allInstances[i]);
+                }
+            }
+            
+            return activeInstances;
         }
         
         /// <summary>
@@ -443,9 +466,9 @@ namespace Framework.EnhanceUI.Core
         /// <returns>是否可以创建</returns>
         private bool CanCreateInstance(UIConfigData config)
         {
-            var activeInstances = GetActiveInstances(config.UIName);
+            var activeInstances = GetActiveInstances(config.uiName);
             
-            switch (config.OpenStrategy)
+            switch (config.openStrategy)
             {
                 case UIOpenStrategy.Single:
                     return activeInstances.Count == 0;
@@ -454,7 +477,7 @@ namespace Framework.EnhanceUI.Core
                     return activeInstances.Count < maxInstancesPerUI;
                 
                 case UIOpenStrategy.Limited:
-                    return activeInstances.Count < config.MaxInstances;
+                    return activeInstances.Count < config.maxInstances;
                 
                 case UIOpenStrategy.Stack:
                 case UIOpenStrategy.Queue:
@@ -471,16 +494,16 @@ namespace Framework.EnhanceUI.Core
         /// <param name="config">UI配置</param>
         private void HandleExistingInstances(UIConfigData config)
         {
-            var activeInstances = GetActiveInstances(config.UIName);
+            var activeInstances = GetActiveInstances(config.uiName);
             
-            switch (config.OpenStrategy)
+            switch (config.openStrategy)
             {
                 case UIOpenStrategy.Single:
                     // 单例模式：关闭所有现有实例
                     foreach (var instance in activeInstances)
                     {
                         DestroyInstance(instance);
-                        OnStrategyConflict?.Invoke(config.UIName, config.OpenStrategy, instance);
+                        OnStrategyConflict?.Invoke(config.uiName, config.openStrategy, instance);
                     }
                     break;
                 
@@ -488,28 +511,52 @@ namespace Framework.EnhanceUI.Core
                     // 栈模式：隐藏最顶层的实例
                     if (activeInstances.Count > 0)
                     {
-                        var topInstance = activeInstances.OrderByDescending(i => i.CreateTime).First();
+                        // 找到创建时间最晚的实例（最顶层）
+                        UIInstance topInstance = activeInstances[0];
+                        for (int i = 1; i < activeInstances.Count; i++)
+                        {
+                            if (activeInstances[i].CreateTime > topInstance.CreateTime)
+                            {
+                                topInstance = activeInstances[i];
+                            }
+                        }
                         HideInstance(topInstance);
                     }
                     break;
                 
                 case UIOpenStrategy.Queue:
                     // 队列模式：关闭最早的实例
-                    if (activeInstances.Count >= config.MaxInstances)
+                    if (activeInstances.Count >= config.maxInstances)
                     {
-                        var oldestInstance = activeInstances.OrderBy(i => i.CreateTime).First();
+                        // 找到创建时间最早的实例
+                        UIInstance oldestInstance = activeInstances[0];
+                        for (int i = 1; i < activeInstances.Count; i++)
+                        {
+                            if (activeInstances[i].CreateTime < oldestInstance.CreateTime)
+                            {
+                                oldestInstance = activeInstances[i];
+                            }
+                        }
                         DestroyInstance(oldestInstance);
-                        OnStrategyConflict?.Invoke(config.UIName, config.OpenStrategy, oldestInstance);
+                        OnStrategyConflict?.Invoke(config.uiName, config.openStrategy, oldestInstance);
                     }
                     break;
                 
                 case UIOpenStrategy.Limited:
                     // 限制模式：如果超过限制，关闭最早的实例
-                    while (activeInstances.Count >= config.MaxInstances)
+                    while (activeInstances.Count >= config.maxInstances)
                     {
-                        var oldestInstance = activeInstances.OrderBy(i => i.CreateTime).First();
+                        // 找到创建时间最早的实例
+                        UIInstance oldestInstance = activeInstances[0];
+                        for (int i = 1; i < activeInstances.Count; i++)
+                        {
+                            if (activeInstances[i].CreateTime < oldestInstance.CreateTime)
+                            {
+                                oldestInstance = activeInstances[i];
+                            }
+                        }
                         DestroyInstance(oldestInstance);
-                        OnStrategyConflict?.Invoke(config.UIName, config.OpenStrategy, oldestInstance);
+                        OnStrategyConflict?.Invoke(config.uiName, config.openStrategy, oldestInstance);
                         activeInstances.Remove(oldestInstance);
                     }
                     break;
@@ -721,7 +768,7 @@ namespace Framework.EnhanceUI.Core
         {
             if (layerManager != null && instance.Panel != null)
             {
-                Transform layerTransform = layerManager.GetLayer(instance.Config.LayerType);
+                Transform layerTransform = layerManager.GetLayer(instance.Config.layerType);
                 if (layerTransform != null)
                 {
                     instance.Panel.transform.SetParent(layerTransform, false);
@@ -735,12 +782,19 @@ namespace Framework.EnhanceUI.Core
         /// <returns>管理状态</returns>
         public InstanceManagerStatus GetStatus()
         {
+            // 计算对象池中的总实例数量
+            int poolCount = 0;
+            foreach (var pool in instancePools.Values)
+            {
+                poolCount += pool.Count;
+            }
+            
             return new InstanceManagerStatus
             {
                 ActiveInstanceCount = activeInstances.Count,
                 TotalInstanceCount = TotalInstanceCount,
                 UITypeCount = uiInstances.Count,
-                PoolCount = instancePools.Values.Sum(pool => pool.Count),
+                PoolCount = poolCount,
                 PoolTypeCount = instancePools.Count
             };
         }
