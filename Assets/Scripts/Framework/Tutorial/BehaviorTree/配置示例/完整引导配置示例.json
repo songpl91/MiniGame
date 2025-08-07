@@ -1,0 +1,877 @@
+{
+  "behaviorTreeConfig": {
+    "metadata": {
+      "id": "complete_tutorial_example",
+      "name": "完整新手引导示例",
+      "version": "1.2.0",
+      "author": "游戏策划团队",
+      "description": "展示行为树新手引导系统的完整功能，包括商店引导、战斗引导和背包引导",
+      "tags": ["新手", "完整流程", "示例"],
+      "priority": "High",
+      "estimatedDuration": 300,
+      "category": "MainTutorial",
+      "prerequisites": ["basic_controls_tutorial"],
+      "unlockConditions": {
+        "playerLevel": 1,
+        "gameProgress": "tutorial_ready"
+      }
+    },
+    "globalSettings": {
+      "allowSkip": true,
+      "skipConfirmation": true,
+      "skipButtonText": "跳过引导",
+      "pauseGameDuringTutorial": false,
+      "enableAnalytics": true,
+      "debugMode": false,
+      "timeoutBehavior": "retry",
+      "maxRetries": 3,
+      "retryDelay": 2.0
+    },
+    "triggers": [
+      {
+        "id": "main_trigger",
+        "type": "CompositeTrigger",
+        "logic": "And",
+        "conditions": [
+          {
+            "type": "PlayerLevelCondition",
+            "parameters": {
+              "minLevel": 1,
+              "maxLevel": 5
+            }
+          },
+          {
+            "type": "GameStateCondition",
+            "parameters": {
+              "stateName": "tutorial.mainTutorial.completed",
+              "expectedValue": false
+            }
+          },
+          {
+            "type": "TimeCondition",
+            "parameters": {
+              "minPlayTime": 60,
+              "maxPlayTime": 3600
+            }
+          }
+        ]
+      }
+    ],
+    "behaviorTree": {
+      "rootNode": {
+        "id": "root",
+        "type": "Sequence",
+        "description": "主引导流程根节点",
+        "children": [
+          {
+            "id": "initialization",
+            "type": "Parallel",
+            "description": "初始化检查",
+            "parameters": {
+              "successPolicy": "All",
+              "failurePolicy": "Any"
+            },
+            "children": [
+              {
+                "id": "check_prerequisites",
+                "type": "Sequence",
+                "children": [
+                  {
+                    "id": "check_player_ready",
+                    "type": "PlayerDataCondition",
+                    "parameters": {
+                      "dataType": "Custom",
+                      "dataKey": "tutorial.ready",
+                      "expectedValue": true,
+                      "comparisonOperator": "Equal"
+                    }
+                  },
+                  {
+                    "id": "check_ui_loaded",
+                    "type": "UIStateCondition",
+                    "parameters": {
+                      "uiPath": "MainUI",
+                      "stateType": "Active",
+                      "expectedState": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "initialize_tutorial_data",
+                "type": "InitializeTutorialDataAction",
+                "parameters": {
+                  "tutorialId": "complete_tutorial_example",
+                  "resetProgress": false,
+                  "backupCurrentState": true
+                }
+              }
+            ]
+          },
+          {
+            "id": "welcome_sequence",
+            "type": "Sequence",
+            "description": "欢迎引导序列",
+            "children": [
+              {
+                "id": "show_welcome_message",
+                "type": "ShowMessageAction",
+                "parameters": {
+                  "message": "欢迎来到游戏世界！让我们开始一段精彩的冒险之旅吧！",
+                  "localizationKey": "tutorial.welcome.message",
+                  "duration": 4.0,
+                  "position": "Center",
+                  "style": "Dialog",
+                  "showAvatar": true,
+                  "avatarPath": "UI/Avatars/Guide",
+                  "voiceClip": "welcome_voice",
+                  "allowSkip": true
+                }
+              },
+              {
+                "id": "highlight_main_ui",
+                "type": "HighlightUIAction",
+                "parameters": {
+                  "targetPath": "MainUI",
+                  "highlightType": "Glow",
+                  "color": "#FFD700",
+                  "animationType": "Pulse",
+                  "intensity": 1.2,
+                  "duration": 3.0
+                }
+              }
+            ]
+          },
+          {
+            "id": "shop_tutorial_branch",
+            "type": "Selector",
+            "description": "商店引导分支",
+            "children": [
+              {
+                "id": "check_shop_unlocked",
+                "type": "GameStateCondition",
+                "parameters": {
+                  "stateName": "shop.unlocked",
+                  "expectedValue": true
+                }
+              },
+              {
+                "id": "unlock_shop_sequence",
+                "type": "Sequence",
+                "children": [
+                  {
+                    "id": "show_shop_unlock_message",
+                    "type": "ShowMessageAction",
+                    "parameters": {
+                      "message": "恭喜！商店功能已解锁！",
+                      "localizationKey": "tutorial.shop.unlock",
+                      "duration": 2.0,
+                      "position": "Top",
+                      "style": "Toast"
+                    }
+                  },
+                  {
+                    "id": "unlock_shop_action",
+                    "type": "GameStateAction",
+                    "parameters": {
+                      "stateName": "shop.unlocked",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "shop_guide_sequence",
+            "type": "Sequence",
+            "description": "商店引导主序列",
+            "children": [
+              {
+                "id": "introduce_shop",
+                "type": "ShowMessageAction",
+                "parameters": {
+                  "message": "现在让我们来了解一下商店系统吧！",
+                  "localizationKey": "tutorial.shop.introduce",
+                  "duration": 3.0,
+                  "position": "Center",
+                  "style": "Bubble"
+                }
+              },
+              {
+                "id": "highlight_shop_button",
+                "type": "HighlightUIAction",
+                "parameters": {
+                  "targetPath": "MainUI/BottomPanel/ShopButton",
+                  "highlightType": "Glow",
+                  "color": "#00FF00",
+                  "animationType": "Pulse",
+                  "intensity": 1.5,
+                  "duration": -1
+                }
+              },
+              {
+                "id": "wait_shop_click",
+                "type": "WaitForClickAction",
+                "parameters": {
+                  "targetPath": "MainUI/BottomPanel/ShopButton",
+                  "timeout": 30.0,
+                  "allowSkip": true,
+                  "skipButtonText": "跳过商店引导",
+                  "autoHighlight": false,
+                  "showHint": true,
+                  "hintMessage": "点击商店按钮继续"
+                }
+              },
+              {
+                "id": "wait_shop_ui_loaded",
+                "type": "DelayedDetectionTutorialStep",
+                "parameters": {
+                  "targetPath": "ShopUI",
+                  "initialDelay": 0.5,
+                  "retryInterval": 0.2,
+                  "maxRetries": 10,
+                  "timeout": 5.0,
+                  "title": "等待商店界面加载",
+                  "message": "正在加载商店界面..."
+                }
+              },
+              {
+                "id": "shop_ui_tour",
+                "type": "Sequence",
+                "children": [
+                  {
+                    "id": "highlight_item_list",
+                    "type": "HighlightUIAction",
+                    "parameters": {
+                      "targetPath": "ShopUI/ItemList",
+                      "highlightType": "Frame",
+                      "color": "#FF6B6B",
+                      "animationType": "None",
+                      "intensity": 1.0,
+                      "duration": 5.0
+                    }
+                  },
+                  {
+                    "id": "explain_item_list",
+                    "type": "ShowMessageAction",
+                    "parameters": {
+                      "message": "这里显示了所有可购买的道具",
+                      "localizationKey": "tutorial.shop.itemList",
+                      "duration": 3.0,
+                      "position": "Bottom",
+                      "style": "Bubble"
+                    }
+                  },
+                  {
+                    "id": "highlight_first_item",
+                    "type": "HighlightUIAction",
+                    "parameters": {
+                      "targetPath": "ShopUI/ItemList/Item_0",
+                      "highlightType": "Glow",
+                      "color": "#4ECDC4",
+                      "animationType": "Pulse",
+                      "intensity": 1.3,
+                      "duration": -1
+                    }
+                  },
+                  {
+                    "id": "guide_buy_item",
+                    "type": "ShowMessageAction",
+                    "parameters": {
+                      "message": "试着购买这个道具吧！",
+                      "localizationKey": "tutorial.shop.buyItem",
+                      "duration": 2.0,
+                      "position": "Center",
+                      "style": "Bubble"
+                    }
+                  },
+                  {
+                    "id": "wait_item_click",
+                    "type": "WaitForClickAction",
+                    "parameters": {
+                      "targetPath": "ShopUI/ItemList/Item_0",
+                      "timeout": 20.0,
+                      "allowSkip": true,
+                      "autoHighlight": false
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "shop_completion",
+                "type": "Sequence",
+                "children": [
+                  {
+                    "id": "congratulate_shop",
+                    "type": "ShowMessageAction",
+                    "parameters": {
+                      "message": "太棒了！你已经学会了如何使用商店！",
+                      "localizationKey": "tutorial.shop.completion",
+                      "duration": 3.0,
+                      "position": "Center",
+                      "style": "Dialog",
+                      "showAvatar": true
+                    }
+                  },
+                  {
+                    "id": "mark_shop_completed",
+                    "type": "GameStateAction",
+                    "parameters": {
+                      "stateName": "tutorial.shop.completed",
+                      "value": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "battle_tutorial_branch",
+            "type": "ConditionalDecorator",
+            "parameters": {
+              "conditionKey": "tutorial.shop.completed",
+              "expectedValue": true,
+              "comparisonOperator": "Equal",
+              "checkEveryTick": false
+            },
+            "child": {
+              "id": "battle_guide_sequence",
+              "type": "Sequence",
+              "description": "战斗引导序列",
+              "children": [
+                {
+                  "id": "introduce_battle",
+                  "type": "ShowMessageAction",
+                  "parameters": {
+                    "message": "接下来让我们学习战斗系统！",
+                    "localizationKey": "tutorial.battle.introduce",
+                    "duration": 3.0,
+                    "position": "Center",
+                    "style": "Dialog"
+                  }
+                },
+                {
+                  "id": "close_shop_ui",
+                  "type": "CloseUIAction",
+                  "parameters": {
+                    "uiPath": "ShopUI",
+                    "animationType": "FadeOut",
+                    "duration": 0.5
+                  }
+                },
+                {
+                  "id": "highlight_battle_button",
+                  "type": "HighlightUIAction",
+                  "parameters": {
+                    "targetPath": "MainUI/BottomPanel/BattleButton",
+                    "highlightType": "Glow",
+                    "color": "#FF4757",
+                    "animationType": "Pulse",
+                    "intensity": 1.5,
+                    "duration": -1
+                  }
+                },
+                {
+                  "id": "wait_battle_click",
+                  "type": "WaitForClickAction",
+                  "parameters": {
+                    "targetPath": "MainUI/BottomPanel/BattleButton",
+                    "timeout": 25.0,
+                    "allowSkip": true,
+                    "skipButtonText": "跳过战斗引导"
+                  }
+                },
+                {
+                  "id": "battle_ui_detection",
+                  "type": "DelayedDetectionTutorialStep",
+                  "parameters": {
+                    "targetPath": "BattleUI",
+                    "initialDelay": 1.0,
+                    "retryInterval": 0.3,
+                    "maxRetries": 15,
+                    "timeout": 8.0,
+                    "title": "等待战斗界面",
+                    "message": "正在进入战斗..."
+                  }
+                },
+                {
+                  "id": "battle_controls_tour",
+                  "type": "Parallel",
+                  "parameters": {
+                    "successPolicy": "All",
+                    "failurePolicy": "Any"
+                  },
+                  "children": [
+                    {
+                      "id": "highlight_attack_button",
+                      "type": "HighlightUIAction",
+                      "parameters": {
+                        "targetPath": "BattleUI/ControlPanel/AttackButton",
+                        "highlightType": "Glow",
+                        "color": "#FF6B6B",
+                        "animationType": "Pulse",
+                        "intensity": 1.2,
+                        "duration": 8.0
+                      }
+                    },
+                    {
+                      "id": "explain_attack",
+                      "type": "ShowMessageAction",
+                      "parameters": {
+                        "message": "点击攻击按钮来攻击敌人！",
+                        "localizationKey": "tutorial.battle.attack",
+                        "duration": 4.0,
+                        "position": "Bottom",
+                        "style": "Bubble"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "wait_attack_action",
+                  "type": "WaitForClickAction",
+                  "parameters": {
+                    "targetPath": "BattleUI/ControlPanel/AttackButton",
+                    "timeout": 15.0,
+                    "allowSkip": false,
+                    "autoHighlight": false
+                  }
+                },
+                {
+                  "id": "battle_completion",
+                  "type": "Sequence",
+                  "children": [
+                    {
+                      "id": "congratulate_battle",
+                      "type": "ShowMessageAction",
+                      "parameters": {
+                        "message": "很好！你已经掌握了基本的战斗操作！",
+                        "localizationKey": "tutorial.battle.completion",
+                        "duration": 3.0,
+                        "position": "Center",
+                        "style": "Dialog"
+                      }
+                    },
+                    {
+                      "id": "mark_battle_completed",
+                      "type": "GameStateAction",
+                      "parameters": {
+                        "stateName": "tutorial.battle.completed",
+                        "value": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "inventory_tutorial_branch",
+            "type": "ConditionalDecorator",
+            "parameters": {
+              "conditionKey": "tutorial.battle.completed",
+              "expectedValue": true,
+              "comparisonOperator": "Equal"
+            },
+            "child": {
+              "id": "inventory_guide_sequence",
+              "type": "Sequence",
+              "description": "背包引导序列",
+              "children": [
+                {
+                  "id": "return_to_main",
+                  "type": "Sequence",
+                  "children": [
+                    {
+                      "id": "close_battle_ui",
+                      "type": "CloseUIAction",
+                      "parameters": {
+                        "uiPath": "BattleUI",
+                        "animationType": "SlideOut",
+                        "duration": 0.8
+                      }
+                    },
+                    {
+                      "id": "wait_main_ui_active",
+                      "type": "DelayedDetectionTutorialStep",
+                      "parameters": {
+                        "targetPath": "MainUI",
+                        "targetName": "",
+                        "initialDelay": 0.5,
+                        "retryInterval": 0.2,
+                        "maxRetries": 10,
+                        "timeout": 3.0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "introduce_inventory",
+                  "type": "ShowMessageAction",
+                  "parameters": {
+                    "message": "最后，让我们来看看背包系统！",
+                    "localizationKey": "tutorial.inventory.introduce",
+                    "duration": 3.0,
+                    "position": "Center",
+                    "style": "Dialog"
+                  }
+                },
+                {
+                  "id": "highlight_inventory_button",
+                  "type": "HighlightUIAction",
+                  "parameters": {
+                    "targetPath": "MainUI/BottomPanel/InventoryButton",
+                    "highlightType": "Glow",
+                    "color": "#9C88FF",
+                    "animationType": "Pulse",
+                    "intensity": 1.4,
+                    "duration": -1
+                  }
+                },
+                {
+                  "id": "wait_inventory_click",
+                  "type": "WaitForClickAction",
+                  "parameters": {
+                    "targetPath": "MainUI/BottomPanel/InventoryButton",
+                    "timeout": 20.0,
+                    "allowSkip": true,
+                    "skipButtonText": "跳过背包引导"
+                  }
+                },
+                {
+                  "id": "inventory_ui_detection",
+                  "type": "DelayedDetectionTutorialStep",
+                  "parameters": {
+                    "targetPath": "InventoryUI",
+                    "initialDelay": 0.3,
+                    "retryInterval": 0.2,
+                    "maxRetries": 12,
+                    "timeout": 4.0,
+                    "title": "背包界面加载",
+                    "message": "正在打开背包..."
+                  }
+                },
+                {
+                  "id": "inventory_tour",
+                  "type": "Sequence",
+                  "children": [
+                    {
+                      "id": "highlight_item_slots",
+                      "type": "HighlightUIAction",
+                      "parameters": {
+                        "targetPath": "InventoryUI/ItemGrid",
+                        "highlightType": "Frame",
+                        "color": "#FFA726",
+                        "animationType": "None",
+                        "intensity": 1.0,
+                        "duration": 4.0
+                      }
+                    },
+                    {
+                      "id": "explain_inventory",
+                      "type": "ShowMessageAction",
+                      "parameters": {
+                        "message": "这里显示你拥有的所有道具",
+                        "localizationKey": "tutorial.inventory.explain",
+                        "duration": 3.0,
+                        "position": "Top",
+                        "style": "Bubble"
+                      }
+                    },
+                    {
+                      "id": "check_has_items",
+                      "type": "Selector",
+                      "children": [
+                        {
+                          "id": "has_items_condition",
+                          "type": "PlayerDataCondition",
+                          "parameters": {
+                            "dataType": "Item",
+                            "dataKey": "any",
+                            "expectedValue": 0,
+                            "comparisonOperator": "GreaterThan"
+                          }
+                        },
+                        {
+                          "id": "give_sample_item",
+                          "type": "GiveItemAction",
+                          "parameters": {
+                            "itemId": "potion_health_small",
+                            "quantity": 1,
+                            "showNotification": true,
+                            "notificationMessage": "获得了生命药水！"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "highlight_first_item_slot",
+                      "type": "HighlightUIAction",
+                      "parameters": {
+                        "targetPath": "InventoryUI/ItemGrid/Slot_0",
+                        "highlightType": "Glow",
+                        "color": "#26C6DA",
+                        "animationType": "Pulse",
+                        "intensity": 1.3,
+                        "duration": -1
+                      }
+                    },
+                    {
+                      "id": "guide_use_item",
+                      "type": "ShowMessageAction",
+                      "parameters": {
+                        "message": "试着点击道具来使用它！",
+                        "localizationKey": "tutorial.inventory.useItem",
+                        "duration": 2.5,
+                        "position": "Center",
+                        "style": "Bubble"
+                      }
+                    },
+                    {
+                      "id": "wait_item_use",
+                      "type": "WaitForClickAction",
+                      "parameters": {
+                        "targetPath": "InventoryUI/ItemGrid/Slot_0",
+                        "timeout": 15.0,
+                        "allowSkip": true,
+                        "autoHighlight": false
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "inventory_completion",
+                  "type": "Sequence",
+                  "children": [
+                    {
+                      "id": "congratulate_inventory",
+                      "type": "ShowMessageAction",
+                      "parameters": {
+                        "message": "完美！你已经学会了背包的使用方法！",
+                        "localizationKey": "tutorial.inventory.completion",
+                        "duration": 3.0,
+                        "position": "Center",
+                        "style": "Dialog"
+                      }
+                    },
+                    {
+                      "id": "mark_inventory_completed",
+                      "type": "GameStateAction",
+                      "parameters": {
+                        "stateName": "tutorial.inventory.completed",
+                        "value": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "tutorial_finale",
+            "type": "Sequence",
+            "description": "引导结束序列",
+            "children": [
+              {
+                "id": "close_all_uis",
+                "type": "Parallel",
+                "parameters": {
+                  "successPolicy": "All",
+                  "failurePolicy": "Any"
+                },
+                "children": [
+                  {
+                    "id": "close_inventory",
+                    "type": "CloseUIAction",
+                    "parameters": {
+                      "uiPath": "InventoryUI",
+                      "animationType": "FadeOut",
+                      "duration": 0.5
+                    }
+                  },
+                  {
+                    "id": "ensure_main_ui",
+                    "type": "OpenUIAction",
+                    "parameters": {
+                      "uiPath": "MainUI",
+                      "animationType": "FadeIn",
+                      "duration": 0.3
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "final_congratulations",
+                "type": "ShowMessageAction",
+                "parameters": {
+                  "message": "恭喜你完成了新手引导！现在你可以自由探索游戏世界了！",
+                  "localizationKey": "tutorial.finale.congratulations",
+                  "duration": 5.0,
+                  "position": "Center",
+                  "style": "Dialog",
+                  "showAvatar": true,
+                  "voiceClip": "finale_voice",
+                  "allowSkip": false
+                }
+              },
+              {
+                "id": "unlock_features",
+                "type": "Parallel",
+                "parameters": {
+                  "successPolicy": "All",
+                  "failurePolicy": "Any"
+                },
+                "children": [
+                  {
+                    "id": "unlock_all_features",
+                    "type": "GameStateAction",
+                    "parameters": {
+                      "stateName": "features.allUnlocked",
+                      "value": true
+                    }
+                  },
+                  {
+                    "id": "give_completion_reward",
+                    "type": "GiveRewardAction",
+                    "parameters": {
+                      "rewardType": "Currency",
+                      "rewardId": "gold",
+                      "amount": 1000,
+                      "showNotification": true,
+                      "notificationMessage": "获得新手奖励：1000金币！"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "mark_tutorial_completed",
+                "type": "GameStateAction",
+                "parameters": {
+                  "stateName": "tutorial.mainTutorial.completed",
+                  "value": true
+                }
+              },
+              {
+                "id": "save_progress",
+                "type": "SaveGameAction",
+                "parameters": {
+                  "saveType": "Auto",
+                  "includeAnalytics": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "localization": {
+      "zh-CN": {
+        "tutorial.welcome.message": "欢迎来到游戏世界！让我们开始一段精彩的冒险之旅吧！",
+        "tutorial.shop.unlock": "恭喜！商店功能已解锁！",
+        "tutorial.shop.introduce": "现在让我们来了解一下商店系统吧！",
+        "tutorial.shop.itemList": "这里显示了所有可购买的道具",
+        "tutorial.shop.buyItem": "试着购买这个道具吧！",
+        "tutorial.shop.completion": "太棒了！你已经学会了如何使用商店！",
+        "tutorial.battle.introduce": "接下来让我们学习战斗系统！",
+        "tutorial.battle.attack": "点击攻击按钮来攻击敌人！",
+        "tutorial.battle.completion": "很好！你已经掌握了基本的战斗操作！",
+        "tutorial.inventory.introduce": "最后，让我们来看看背包系统！",
+        "tutorial.inventory.explain": "这里显示你拥有的所有道具",
+        "tutorial.inventory.useItem": "试着点击道具来使用它！",
+        "tutorial.inventory.completion": "完美！你已经学会了背包的使用方法！",
+        "tutorial.finale.congratulations": "恭喜你完成了新手引导！现在你可以自由探索游戏世界了！"
+      },
+      "en-US": {
+        "tutorial.welcome.message": "Welcome to the game world! Let's start an exciting adventure!",
+        "tutorial.shop.unlock": "Congratulations! Shop feature unlocked!",
+        "tutorial.shop.introduce": "Now let's learn about the shop system!",
+        "tutorial.shop.itemList": "Here shows all purchasable items",
+        "tutorial.shop.buyItem": "Try buying this item!",
+        "tutorial.shop.completion": "Great! You've learned how to use the shop!",
+        "tutorial.battle.introduce": "Next, let's learn the battle system!",
+        "tutorial.battle.attack": "Click the attack button to attack enemies!",
+        "tutorial.battle.completion": "Well done! You've mastered basic combat operations!",
+        "tutorial.inventory.introduce": "Finally, let's look at the inventory system!",
+        "tutorial.inventory.explain": "Here shows all items you own",
+        "tutorial.inventory.useItem": "Try clicking an item to use it!",
+        "tutorial.inventory.completion": "Perfect! You've learned how to use the inventory!",
+        "tutorial.finale.congratulations": "Congratulations on completing the tutorial! Now you can freely explore the game world!"
+      }
+    },
+    "analytics": {
+      "trackingEvents": [
+        "tutorial_started",
+        "tutorial_step_completed",
+        "tutorial_step_skipped",
+        "tutorial_section_completed",
+        "tutorial_completed",
+        "tutorial_abandoned",
+        "tutorial_error_occurred"
+      ],
+      "customMetrics": [
+        "total_completion_time",
+        "section_completion_times",
+        "skip_rate_by_section",
+        "retry_count_by_step",
+        "user_interaction_count",
+        "help_requests_count"
+      ],
+      "segmentation": {
+        "playerLevel": true,
+        "deviceType": true,
+        "gameVersion": true,
+        "tutorialVersion": true,
+        "language": true
+      },
+      "funnelAnalysis": {
+        "enabled": true,
+        "steps": [
+          "tutorial_started",
+          "shop_section_completed",
+          "battle_section_completed",
+          "inventory_section_completed",
+          "tutorial_completed"
+        ]
+      }
+    },
+    "errorHandling": {
+      "onUINotFound": {
+        "action": "retry",
+        "maxRetries": 3,
+        "retryDelay": 1.0,
+        "fallbackAction": "skip_step"
+      },
+      "onTimeout": {
+        "action": "show_hint",
+        "hintMessage": "需要帮助吗？点击跳过按钮继续",
+        "allowSkip": true
+      },
+      "onUnexpectedError": {
+        "action": "log_and_continue",
+        "logLevel": "Error",
+        "showUserMessage": false
+      }
+    },
+    "performance": {
+      "maxExecutionTimePerFrame": 16.67,
+      "enableProfiling": true,
+      "memoryThreshold": 50,
+      "optimizationLevel": "Balanced"
+    },
+    "accessibility": {
+      "supportScreenReader": true,
+      "highContrastMode": false,
+      "fontSize": "Normal",
+      "colorBlindSupport": true,
+      "reducedMotion": false
+    },
+    "testing": {
+      "enableTestMode": false,
+      "skipAnimations": false,
+      "fastForwardMode": false,
+      "debugBreakpoints": [],
+      "mockDataEnabled": false
+    }
+  }
+}
