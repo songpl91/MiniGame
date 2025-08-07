@@ -1,0 +1,318 @@
+{
+  "globalSettings": {
+    "tutorialId": "dynamic_ui_tutorial",
+    "version": "1.0.0",
+    "description": "动态UI新手引导配置示例",
+    "author": "Tutorial System",
+    "autoStart": false,
+    "canSkip": true,
+    "canPause": true,
+    "showProgress": true,
+    "debugMode": true,
+    "language": "zh-CN"
+  },
+  "triggers": [
+    {
+      "id": "dynamic_demo_trigger",
+      "type": "Event",
+      "eventName": "DynamicUI.Demo.Start",
+      "conditions": [],
+      "priority": 1,
+      "enabled": true
+    }
+  ],
+  "sequences": [
+    {
+      "id": "dynamic_ui_sequence",
+      "name": "动态UI引导序列",
+      "description": "演示如何引导动态加载的UI控件",
+      "triggerId": "dynamic_demo_trigger",
+      "priority": 1,
+      "enabled": true,
+      "autoNext": true,
+      "canSkip": true,
+      "steps": [
+        {
+          "id": "wait_for_panel",
+          "name": "等待动态面板",
+          "description": "等待动态面板创建完成",
+          "type": "Wait",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "DynamicSettingsPanel",
+              "searchInChildren": true,
+              "searchInParent": false,
+              "mustBeActive": true,
+              "mustBeInteractable": false,
+              "maxWaitTime": 10.0,
+              "checkInterval": 0.5,
+              "maxRetryCount": 20,
+              "enableParentListener": true,
+              "parentPath": "Canvas",
+              "triggerConditions": [
+                {
+                  "type": "ObjectExists",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "waitConfig": {
+            "waitType": "UntilCondition",
+            "duration": 0.0,
+            "condition": {
+              "type": "UIElementExists",
+              "targetPath": "DynamicSettingsPanel"
+            }
+          },
+          "message": {
+            "title": "等待中...",
+            "content": "正在等待动态面板加载完成",
+            "showDuration": 2.0,
+            "position": "Center",
+            "style": "Info"
+          },
+          "enabled": true,
+          "canSkip": false
+        },
+        {
+          "id": "highlight_dynamic_panel",
+          "name": "高亮动态面板",
+          "description": "高亮显示刚创建的动态面板",
+          "type": "Highlight",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "DynamicSettingsPanel",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Outline",
+            "highlightColor": "#00FF00FF",
+            "highlightWidth": 3.0,
+            "animationType": "Pulse",
+            "animationDuration": 1.0,
+            "showMask": true,
+            "maskColor": "#00000080"
+          },
+          "message": {
+            "title": "动态面板",
+            "content": "这是一个动态创建的设置面板，引导系统可以自动检测到它！",
+            "showDuration": 3.0,
+            "position": "Bottom",
+            "style": "Success"
+          },
+          "enabled": true,
+          "canSkip": true
+        },
+        {
+          "id": "wait_for_button",
+          "name": "等待动态按钮",
+          "description": "等待动态按钮创建",
+          "type": "Wait",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "DynamicConfirmButton",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "mustBeInteractable": true,
+              "maxWaitTime": 8.0,
+              "checkInterval": 0.3,
+              "enableParentListener": true,
+              "parentPath": "DynamicSettingsPanel"
+            }
+          },
+          "waitConfig": {
+            "waitType": "UntilCondition",
+            "condition": {
+              "type": "UIElementExists",
+              "targetPath": "DynamicConfirmButton"
+            }
+          },
+          "message": {
+            "title": "等待按钮...",
+            "content": "正在等待确认按钮出现",
+            "showDuration": 2.0,
+            "position": "Center"
+          },
+          "enabled": true
+        },
+        {
+          "id": "click_dynamic_button",
+          "name": "点击动态按钮",
+          "description": "引导用户点击动态创建的按钮",
+          "type": "Click",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "DynamicConfirmButton",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "mustBeInteractable": true,
+              "maxWaitTime": 3.0,
+              "checkInterval": 0.1
+            }
+          },
+          "interactionConfig": {
+            "waitForClick": true,
+            "highlightOnHover": true,
+            "showClickEffect": true,
+            "clickEffectType": "Ripple",
+            "autoClick": false,
+            "clickDelay": 0.0
+          },
+          "visualConfig": {
+            "highlightType": "Glow",
+            "highlightColor": "#FFD700FF",
+            "animationType": "Bounce",
+            "showArrow": true,
+            "arrowDirection": "Down"
+          },
+          "message": {
+            "title": "点击确认",
+            "content": "请点击这个动态创建的确认按钮",
+            "position": "Top",
+            "style": "Instruction"
+          },
+          "enabled": true,
+          "canSkip": true
+        },
+        {
+          "id": "wait_for_shop",
+          "name": "等待商店面板",
+          "description": "等待复杂的商店面板创建",
+          "type": "Wait",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "DynamicShopPanel",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "maxWaitTime": 12.0,
+              "checkInterval": 0.5
+            }
+          },
+          "waitConfig": {
+            "waitType": "UntilCondition",
+            "duration": 0.0,
+            "condition": {
+              "type": "UIElementExists",
+              "targetPath": "DynamicShopPanel"
+            }
+          },
+          "message": {
+            "title": "加载商店...",
+            "content": "正在加载商店界面，请稍候",
+            "showDuration": 3.0,
+            "position": "Center"
+          },
+          "enabled": true
+        },
+        {
+          "id": "highlight_recommended_item",
+          "name": "高亮推荐商品",
+          "description": "高亮显示推荐的商品项",
+          "type": "Highlight",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByTag",
+              "searchValue": "TutorialTarget",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2,
+              "enableParentListener": true,
+              "parentPath": "DynamicShopPanel"
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Border",
+            "highlightColor": "#FF6B6BFF",
+            "highlightWidth": 4.0,
+            "animationType": "Flash",
+            "animationDuration": 0.8,
+            "showMask": true,
+            "maskColor": "#00000060"
+          },
+          "message": {
+            "title": "推荐商品",
+            "content": "这是我们为您推荐的热门商品！",
+            "showDuration": 4.0,
+            "position": "Right",
+            "style": "Highlight"
+          },
+          "enabled": true,
+          "canSkip": true
+        },
+        {
+          "id": "guide_purchase",
+          "name": "引导购买",
+          "description": "引导用户完成购买流程",
+          "type": "Click",
+          "target": {
+            "isDynamic": true,
+            "dynamicConfig": {
+              "searchType": "ByName",
+              "searchValue": "PurchaseButton",
+              "searchInChildren": true,
+              "mustBeActive": true,
+              "mustBeInteractable": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2,
+              "enableParentListener": true,
+              "parentPath": "DynamicShopPanel"
+            }
+          },
+          "interactionConfig": {
+            "waitForClick": true,
+            "highlightOnHover": true,
+            "showClickEffect": true,
+            "autoClick": false
+          },
+          "visualConfig": {
+            "highlightType": "Glow",
+            "highlightColor": "#00FF7FFF",
+            "animationType": "Pulse",
+            "showArrow": true,
+            "arrowDirection": "Up"
+          },
+          "message": {
+            "title": "完成购买",
+            "content": "点击购买按钮完成交易",
+            "position": "Bottom",
+            "style": "Success"
+          },
+          "enabled": true,
+          "canSkip": true
+        },
+        {
+          "id": "tutorial_complete",
+          "name": "引导完成",
+          "description": "动态UI引导完成",
+          "type": "Message",
+          "message": {
+            "title": "恭喜！",
+            "content": "您已经完成了动态UI引导！引导系统可以智能地检测和引导任何动态创建的UI元素。",
+            "showDuration": 5.0,
+            "position": "Center",
+            "style": "Success"
+          },
+          "enabled": true,
+          "canSkip": false
+        }
+      ]
+    }
+  ]
+}

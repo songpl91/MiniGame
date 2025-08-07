@@ -30,6 +30,7 @@ namespace Framework.SplUI.Test
         
         private int currentAnimationIndex = 0;
         private bool isTestRunning = false;
+        private SplUIAnimationType currentShowAnimationType = SplUIAnimationType.FadeScale;
         
         /// <summary>
         /// Unity Start方法
@@ -150,9 +151,12 @@ namespace Framework.SplUI.Test
             
             Debug.Log($"[AnimationTest] 测试动画类型: {animationType}");
             
+            // 记录当前动画类型
+            currentShowAnimationType = animationType;
+            
             // 设置动画类型
-            testPanel.ShowAnimation = animationType;
-            testPanel.HideAnimation = GetCorrespondingHideAnimation(animationType);
+            testPanel.SetShowAnimation(animationType);
+            testPanel.SetHideAnimation(GetCorrespondingHideAnimation(animationType));
             
             // 如果面板当前是显示状态，先隐藏再显示
             if (testPanel.IsShowing)
@@ -219,8 +223,9 @@ namespace Framework.SplUI.Test
             testPanel.Hide();
             
             // 重置动画类型为默认值
-            testPanel.ShowAnimation = SplUIAnimationType.FadeScale;
-            testPanel.HideAnimation = SplUIAnimationType.FadeScale;
+            currentShowAnimationType = SplUIAnimationType.FadeScale;
+            testPanel.SetShowAnimation(SplUIAnimationType.FadeScale);
+            testPanel.SetHideAnimation(SplUIAnimationType.FadeScale);
         }
         
         /// <summary>
@@ -238,7 +243,7 @@ namespace Framework.SplUI.Test
             if (testPanel != null)
             {
                 GUILayout.Label($"面板状态: {(testPanel.IsShowing ? "显示" : "隐藏")}");
-                GUILayout.Label($"当前动画: {testPanel.ShowAnimation}");
+                GUILayout.Label($"当前动画: {currentShowAnimationType}");
             }
             
             GUILayout.EndArea();

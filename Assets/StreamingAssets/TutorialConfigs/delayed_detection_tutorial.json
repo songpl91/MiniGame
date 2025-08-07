@@ -1,0 +1,81 @@
+{
+  "tutorialId": "delayed_detection_demo",
+  "name": "延迟检测引导演示",
+  "description": "展示使用延迟检测机制处理界面切换的引导流程",
+  "version": "1.0.0",
+  "steps": [
+    {
+      "stepId": "welcome",
+      "stepType": "ShowMessage",
+      "title": "欢迎",
+      "message": "欢迎来到延迟检测引导演示！\n我们将展示如何用简单的延迟机制处理界面切换。",
+      "showSkipButton": false,
+      "autoClose": true,
+      "duration": 3.0
+    },
+    {
+      "stepId": "clickCurrent",
+      "stepType": "DelayedDetection",
+      "title": "点击当前按钮",
+      "message": "请点击切换面板按钮，我们将切换到另一个面板",
+      "targetPath": "SwitchPanelButton",
+      "initialDelay": 0.1,
+      "retryInterval": 0.2,
+      "maxRetries": 10,
+      "timeout": 5.0,
+      "highlightColor": "#FFFF00AA",
+      "animationType": "breathe"
+    },
+    {
+      "stepId": "clickSwitched", 
+      "stepType": "DelayedDetection",
+      "title": "点击切换后的按钮",
+      "message": "很好！现在请点击创建动态UI按钮",
+      "targetPath": "CreateDynamicUIButton",
+      "initialDelay": 1.0,
+      "retryInterval": 0.3,
+      "maxRetries": 15,
+      "timeout": 10.0,
+      "highlightColor": "#00FF00AA",
+      "animationType": "breathe",
+      "comment": "给面板切换留出时间"
+    },
+    {
+      "stepId": "clickDynamic",
+      "stepType": "DelayedDetection", 
+      "title": "点击动态按钮",
+      "message": "太棒了！现在请点击刚创建的动态按钮",
+      "targetName": "DynamicTestButton",
+      "initialDelay": 2.0,
+      "retryInterval": 0.5,
+      "maxRetries": 20,
+      "timeout": 15.0,
+      "highlightColor": "#FF00FFAA",
+      "animationType": "breathe",
+      "comment": "给动态UI创建留出更多时间"
+    },
+    {
+      "stepId": "complete",
+      "stepType": "ShowMessage",
+      "title": "完成",
+      "message": "恭喜！您已经体验了延迟检测引导的强大功能。\n这种方案比复杂的跨界面管理更简单、更可靠！",
+      "showSkipButton": false,
+      "autoClose": true,
+      "duration": 4.0
+    }
+  ],
+  "settings": {
+    "enableDebugLog": true,
+    "stepTransitionDelay": 0.5,
+    "allowSkip": true,
+    "showProgress": true,
+    "autoSave": true
+  },
+  "metadata": {
+    "author": "Tutorial System",
+    "createTime": "2024-01-01",
+    "tags": ["delayed-detection", "ui-transition", "demo"],
+    "difficulty": "beginner",
+    "estimatedTime": "2-3分钟"
+  }
+}

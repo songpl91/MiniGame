@@ -40,7 +40,7 @@ namespace Framework.SplUI.Core
         [Header("滑动动画设置")]
         [SerializeField]
         [Tooltip("滑动方向")]
-        private SlideDirection slideDirection = SlideDirection.Bottom;
+        private SplUISlideDirection slideDirection = SplUISlideDirection.Bottom;
         
         [SerializeField]
         [Tooltip("滑动距离")]
@@ -58,17 +58,6 @@ namespace Framework.SplUI.Core
         private Vector2 originalPosition;
         private Vector3 originalScale;
         private float originalAlpha;
-        
-        /// <summary>
-        /// 滑动方向枚举
-        /// </summary>
-        public enum SlideDirection
-        {
-            Left,
-            Right,
-            Top,
-            Bottom
-        }
         
         /// <summary>
         /// 是否正在播放动画
@@ -333,13 +322,13 @@ namespace Framework.SplUI.Core
         {
             switch (slideDirection)
             {
-                case SlideDirection.Left:
+                case SplUISlideDirection.Left:
                     return Vector2.left * slideDistance;
-                case SlideDirection.Right:
+                case SplUISlideDirection.Right:
                     return Vector2.right * slideDistance;
-                case SlideDirection.Top:
+                case SplUISlideDirection.Top:
                     return Vector2.up * slideDistance;
-                case SlideDirection.Bottom:
+                case SplUISlideDirection.Bottom:
                     return Vector2.down * slideDistance;
                 default:
                     return Vector2.zero;

@@ -1,0 +1,396 @@
+{
+  "configId": "battle_tutorial",
+  "configName": "战斗场景新手引导",
+  "description": "教导玩家基本的战斗操作",
+  "version": "1.0.0",
+  "isEnabled": true,
+  "globalSettings": {
+    "enableTutorial": true,
+    "autoStart": false,
+    "allowSkip": true,
+    "showProgress": true,
+    "defaultStepDelay": 0.5,
+    "defaultStepTimeout": 30.0,
+    "animationSpeed": 1.0,
+    "uiSettings": {
+      "highlightColor": "#FFFF00",
+      "maskColor": "#000000AA",
+      "fontSize": 16
+    }
+  },
+  "sequences": [
+    {
+      "id": "basic_battle_tutorial",
+      "name": "基础战斗引导",
+      "description": "教导玩家基本的战斗操作",
+      "isEnabled": true,
+      "priority": 0,
+      "triggerConfig": {
+        "triggerType": "Event",
+        "eventName": "Battle.Tutorial.Start",
+        "conditions": [
+          {
+            "conditionType": "Scene",
+            "sceneName": "BattleScene",
+            "sceneState": "Loaded"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "stepId": "welcome_message",
+          "stepName": "欢迎消息",
+          "stepType": "ShowMessage",
+          "messageConfig": {
+            "messageText": "欢迎来到战斗场景！让我们学习基本的战斗操作。",
+            "displayDuration": 3.0,
+            "messagePosition": "Center",
+            "autoClose": true
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByPosition",
+              "targetPosition": {
+                "x": 0,
+                "y": 2,
+                "z": 0
+              },
+              "maxWaitTime": 1.0,
+              "checkInterval": 0.1
+            }
+          },
+          "waitConfig": {
+            "waitType": "Time",
+            "waitDuration": 3.0
+          }
+        },
+        {
+          "stepId": "find_enemy",
+          "stepName": "寻找敌人",
+          "stepType": "HighlightTarget",
+          "messageConfig": {
+            "messageText": "看！前方有一个敌人，我们需要攻击它。",
+            "displayDuration": 4.0,
+            "messagePosition": "Top",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByTag",
+              "searchValue": "Enemy",
+              "mustBeActive": true,
+              "mustBeVisible": true,
+              "maxWaitTime": 10.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Outline",
+            "highlightColor": "#FF0000",
+            "enableAnimation": true,
+            "animationSpeed": 2.0
+          },
+          "waitConfig": {
+            "waitType": "Time",
+            "waitDuration": 4.0
+          }
+        },
+        {
+          "stepId": "move_to_enemy",
+          "stepName": "移动到敌人",
+          "stepType": "MoveToTarget",
+          "messageConfig": {
+            "messageText": "点击敌人或使用移动键靠近敌人。",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByTag",
+              "searchValue": "Enemy",
+              "mustBeActive": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Arrow",
+            "highlightColor": "#00FF00",
+            "arrowDistance": 3.0,
+            "arrowFollowCamera": true
+          },
+          "waitConfig": {
+            "waitType": "Condition",
+            "conditionType": "Distance",
+            "conditionValue": "Player,Enemy,3.0",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "attack_enemy",
+          "stepName": "攻击敌人",
+          "stepType": "AttackTarget",
+          "messageConfig": {
+            "messageText": "很好！现在点击攻击按钮或按空格键攻击敌人。",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByTag",
+              "searchValue": "Enemy",
+              "mustBeActive": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Pulse",
+            "highlightColor": "#FF0000",
+            "pulseSpeed": 3.0,
+            "pulseIntensity": 0.8
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Attack.Complete",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "use_skill",
+          "stepName": "使用技能",
+          "stepType": "UseSkill",
+          "messageConfig": {
+            "messageText": "试试使用技能！按Q键释放火球术。",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByTag",
+              "searchValue": "Enemy",
+              "mustBeActive": true,
+              "maxWaitTime": 5.0,
+              "checkInterval": 0.2
+            }
+          },
+          "interactionConfig": {
+            "skillId": "fireball",
+            "requireTarget": true
+          },
+          "visualConfig": {
+            "highlightType": "Circle",
+            "highlightColor": "#FFA500",
+            "circleRadius": 2.0,
+            "circleRotating": true
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Skill.fireball.Used",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "pickup_item",
+          "stepName": "拾取物品",
+          "stepType": "PickupItem",
+          "messageConfig": {
+            "messageText": "敌人掉落了物品！走过去拾取它。",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByTag",
+              "searchValue": "Item",
+              "mustBeActive": true,
+              "maxWaitTime": 10.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Glow",
+            "highlightColor": "#FFD700",
+            "enableAnimation": true,
+            "animationSpeed": 1.5
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Item.Pickup",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "interact_chest",
+          "stepName": "打开宝箱",
+          "stepType": "InteractObject",
+          "messageConfig": {
+            "messageText": "发现了一个宝箱！走近并按F键打开它。",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByName",
+              "searchValue": "TreasureChest",
+              "mustBeActive": true,
+              "maxWaitTime": 15.0,
+              "checkInterval": 0.2
+            }
+          },
+          "visualConfig": {
+            "highlightType": "Outline",
+            "highlightColor": "#FFD700",
+            "outlineWidth": 3.0,
+            "outlineAnimated": true
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Object.Chest.Opened",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "battle_complete",
+          "stepName": "战斗完成",
+          "stepType": "ShowMessage",
+          "messageConfig": {
+            "messageText": "恭喜！你已经掌握了基本的战斗操作。继续探索更多内容吧！",
+            "displayDuration": 5.0,
+            "messagePosition": "Center",
+            "autoClose": true
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByPosition",
+              "targetPosition": {
+                "x": 0,
+                "y": 2,
+                "z": 0
+              },
+              "maxWaitTime": 1.0,
+              "checkInterval": 0.1
+            }
+          },
+          "waitConfig": {
+            "waitType": "Time",
+            "waitDuration": 5.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "advanced_battle_tutorial",
+      "name": "高级战斗引导",
+      "description": "教导玩家高级战斗技巧",
+      "isEnabled": true,
+      "priority": 1,
+      "triggerConfig": {
+        "triggerType": "Event",
+        "eventName": "Battle.Advanced.Tutorial.Start",
+        "conditions": [
+          {
+            "conditionType": "PlayerLevel",
+            "minLevel": 5
+          }
+        ]
+      },
+      "steps": [
+        {
+          "stepId": "combo_attack",
+          "stepName": "连击攻击",
+          "stepType": "AttackTarget",
+          "messageConfig": {
+            "messageText": "尝试连续攻击来造成连击伤害！",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "targetConfig": {
+            "isUITarget": false,
+            "isBattleTarget": true,
+            "isBattleScene": true,
+            "battleConfig": {
+              "searchType": "ByComponent",
+              "searchValue": "EnemyController",
+              "componentType": "EnemyController",
+              "mustBeActive": true,
+              "maxWaitTime": 10.0,
+              "checkInterval": 0.2
+            }
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Combo.Achieved",
+            "timeoutDuration": 45.0
+          }
+        },
+        {
+          "stepId": "dodge_attack",
+          "stepName": "闪避攻击",
+          "stepType": "WaitForEvent",
+          "messageConfig": {
+            "messageText": "敌人要攻击了！按Shift键闪避！",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Dodge.Success",
+            "timeoutDuration": 30.0
+          }
+        },
+        {
+          "stepId": "ultimate_skill",
+          "stepName": "终极技能",
+          "stepType": "UseSkill",
+          "messageConfig": {
+            "messageText": "能量已满！按R键释放终极技能！",
+            "displayDuration": 0,
+            "messagePosition": "Bottom",
+            "autoClose": false
+          },
+          "interactionConfig": {
+            "skillId": "ultimate",
+            "requireTarget": false
+          },
+          "waitConfig": {
+            "waitType": "Event",
+            "eventName": "Player.Skill.ultimate.Used",
+            "timeoutDuration": 30.0
+          }
+        }
+      ]
+    }
+  ]
+}

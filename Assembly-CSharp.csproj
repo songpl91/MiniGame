@@ -96,12 +96,13 @@
     <Compile Include="Assets\Scripts\Constants\AudioConst.cs" />
     <Compile Include="Assets\Scripts\Extensions\ExtensionMethod.cs" />
     <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\UILayerType.cs" />
+    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIAnimationComponent.cs" />
     <Compile Include="Assets\Scripts\Framework\Events\EventManager.cs" />
     <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\EnhanceUIManager.cs" />
     <Compile Include="Assets\Scripts\Framework\UI\UINavigationTestScene.cs" />
     <Compile Include="Assets\Scripts\Framework\StateMachineUI\States\GamePlayState.cs" />
-    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\EnhanceUIPanel.cs" />
     <Compile Include="Assets\Scripts\Framework\SplUI\Examples\ExamplePanel.cs" />
+    <Compile Include="Assets\Scripts\Framework\EnhanceUI\Core\EnhanceUIPanel.cs" />
     <Compile Include="Assets\Scripts\Framework\NormalUI\MessageToast.cs" />
     <Compile Include="Assets\Scripts\Framework\UI\NonLinearNavigationTestManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Fsm\StateMachineOptimized.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Assets\Scripts\Utility\PlayerPrefsUtil.cs" />
     <Compile Include="Assets\Scripts\Utility\Utility.Verifier.cs" />
     <Compile Include="Assets\Scripts\Helpers\SettingHelper.cs" />
+    <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUITypes.cs" />
     <Compile Include="Assets\Scripts\Extensions\UI\ToggleSwitcher.cs" />
     <Compile Include="Assets\Scripts\Framework\NormalUI\UIBase.cs" />
     <Compile Include="Assets\Scripts\Framework\SplUI\Core\SplUIAnimator.cs" />
